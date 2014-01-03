@@ -5,12 +5,12 @@ var jasmine = require('./index');
 var out = process.stdout.write.bind(process.stdout);
 
 it('should run unit test and pass', function (cb) {
-	var stream = jasmine();
+	var stream = jasmine({verbose: true});
 
 	process.stdout.write = function (str) {
 		out(str);
 
-		if (/1 assertion/.test(str)) {
+		if (/should pass/.test(str)) {
 			assert(true);
 			process.stdout.write = out;
 			cb();

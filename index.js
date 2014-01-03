@@ -8,6 +8,12 @@ module.exports = function (options) {
 
 	var miniJasmineLib = require('minijasminenode');
 
+	var jasmineOptions = {
+		isVerbose: options.verbose,
+		includeStackTrace: options.includeStackTrace,
+		defaultTimeoutInterval: options.timeout
+	};
+
 	if (options.reporter) {
 		miniJasmineLib.addReporter(options.reporter);
 	}
@@ -17,12 +23,12 @@ module.exports = function (options) {
 		miniJasmineLib.addSpecs(file.path);
 		this.emit('data', file);
 	}, function () {
+		jasmineOptions.onComplete = function () {
+			this.emit('end');
+		}.bind(this);
+
 		try {
-			miniJasmineLib.executeSpecs({
-				onComplete: function () {
-					this.emit('end');
-				}.bind(this)
-			});
+			miniJasmineLib.executeSpecs(jasmineOptions);
 		} catch (err) {
 			this.emit('error', new Error('gulp-jasmine: ' + err));
 		}
