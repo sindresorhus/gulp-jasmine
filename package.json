@@ -1,6 +1,6 @@
 {
   "name": "gulp-jasmine",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Run Jasmine tests",
   "license": "MIT",
   "repository": "sindresorhus/gulp-jasmine",
