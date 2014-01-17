@@ -1,36 +1,44 @@
 'use strict';
 var path = require('path');
-var through = require('through');
 var gutil = require('gulp-util');
+var through = require('through2');
 
 module.exports = function (options) {
 	options = options || {};
 
 	var miniJasmineLib = require('minijasminenode');
 
-	var jasmineOptions = {
-		isVerbose: options.verbose,
-		includeStackTrace: options.includeStackTrace,
-		defaultTimeoutInterval: options.timeout
-	};
-
 	if (options.reporter) {
 		miniJasmineLib.addReporter(options.reporter);
 	}
 
-	return through(function (file) {
+	return through.obj(function (file, enc, cb) {
+		if (file.isNull()) {
+			this.push(file);
+			return cb();
+		}
+
+		if (file.isStream()) {
+			this.emit('error', new gutil.PluginError('gulp-jasmine', 'Streaming not supported'));
+			return cb();
+		}
+
 		delete require.cache[require.resolve(path.resolve(file.path))];
 		miniJasmineLib.addSpecs(file.path);
-		this.emit('data', file);
-	}, function () {
-		jasmineOptions.onComplete = function () {
-			this.emit('end');
-		}.bind(this);
 
+		this.push(file);
+		cb();
+	}, function (cb) {
 		try {
-			miniJasmineLib.executeSpecs(jasmineOptions);
+			miniJasmineLib.executeSpecs({
+				isVerbose: options.verbose,
+				includeStackTrace: options.includeStackTrace,
+				defaultTimeoutInterval: options.timeout,
+				onComplete: function () {cb()}
+			});
 		} catch (err) {
-			this.emit('error', new Error('gulp-jasmine: ' + err));
+			this.emit('error', new gutil.PluginError('gulp-jasmine', err));
+			cb();
 		}
 	});
 };

@@ -17,6 +17,10 @@ it('should run unit test and pass', function (cb) {
 		}
 	};
 
-	stream.write(new gutil.File({path: 'fixture.js'}));
+	stream.write(new gutil.File({
+		path: 'fixture.js',
+		contents: new Buffer('')
+	}));
+
 	stream.end();
 });
