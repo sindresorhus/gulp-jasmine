@@ -2,11 +2,13 @@
 var path = require('path');
 var gutil = require('gulp-util');
 var through = require('through2');
+var requireLike = require('require-like');
+var jasmineRequire = requireLike(require.resolve('minijasminenode'), true);
 
 module.exports = function (options) {
 	options = options || {};
 
-	var miniJasmineLib = require('minijasminenode');
+	var miniJasmineLib = jasmineRequire('minijasminenode');
 
 	if (options.reporter) {
 		miniJasmineLib.addReporter(options.reporter);

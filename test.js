@@ -2,6 +2,7 @@
 var assert = require('assert');
 var gutil = require('gulp-util');
 var jasmine = require('./index');
+var through2 = require('through2');
 var out = process.stdout.write.bind(process.stdout);
 
 it('should run unit test and pass', function (cb) {
@@ -23,4 +24,29 @@ it('should run unit test and pass', function (cb) {
 	}));
 
 	stream.end();
+});
+
+it('should run the test only once even if called in succession', function (done) {
+	var stream = jasmine({verbose: true});
+	var output = '';
+	var reader = through2.obj(function (data, enc, cb) {
+			cb();
+		},
+		function (cb) {
+			process.stdout.write = out;
+			assert.equal(output.match(/should pass/g).length, 1);
+			done();
+			cb();
+		});
+
+	process.stdout.write = function (str) {
+		output += str;
+	};
+	stream.pipe(reader);
+
+	stream.write(new gutil.File({
+		path: 'fixture.js',
+		contents: new Buffer('')
+	}));
+	stream.end();	
 });
