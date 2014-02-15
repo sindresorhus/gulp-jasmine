@@ -36,6 +36,7 @@ module.exports = function (options) {
 				isVerbose: options.verbose,
 				includeStackTrace: options.includeStackTrace,
 				defaultTimeoutInterval: options.timeout,
+				showColors: options.showColors,
 				onComplete: function () {cb()}
 			});
 		} catch (err) {

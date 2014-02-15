@@ -59,6 +59,13 @@ Default `5000`
 
 Time to wait in milliseconds before a test automatically fails.
 
+##### showColors
+
+Type: `Boolean`
+Default `false`
+
+Print colors to the terminal
+
 
 ## License
 
