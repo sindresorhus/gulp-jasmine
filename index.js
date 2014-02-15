@@ -9,6 +9,7 @@ module.exports = function (options) {
 	options = options || {};
 
 	var miniJasmineLib = jasmineRequire('minijasminenode');
+	var color = process.argv.indexOf('--no-color') === -1;
 
 	if (options.reporter) {
 		miniJasmineLib.addReporter(options.reporter);
@@ -36,7 +37,8 @@ module.exports = function (options) {
 				isVerbose: options.verbose,
 				includeStackTrace: options.includeStackTrace,
 				defaultTimeoutInterval: options.timeout,
-				onComplete: function () {cb()}
+				onComplete: function () {cb()},
+				showColors: color
 			});
 		} catch (err) {
 			this.emit('error', new gutil.PluginError('gulp-jasmine', err));
