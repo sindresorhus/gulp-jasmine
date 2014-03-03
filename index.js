@@ -12,7 +12,14 @@ module.exports = function (options) {
 	var color = process.argv.indexOf('--no-color') === -1;
 
 	if (options.reporter) {
-		miniJasmineLib.addReporter(options.reporter);
+		if (options.reporter instanceof Array) {
+			var reporters = options.reporter;
+			for (var i = 0; i < reporters.length; i++) {
+				miniJasmineLib.addReporter(reporters[i]);
+			}
+		} else {
+			miniJasmineLib.addReporter(options.reporter);
+		}
 	}
 
 	return through.obj(function (file, enc, cb) {
