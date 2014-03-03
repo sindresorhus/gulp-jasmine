@@ -34,9 +34,9 @@ gulp.task('default', function () {
 
 ##### reporter
 
-Type: `Object`
+Type: `Object`, `Array` of `Objects`
 
-Reporter to use.
+Reporter(s) to use.
 
 ##### verbose
 

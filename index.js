@@ -10,16 +10,10 @@ module.exports = function (options) {
 
 	var miniJasmineLib = jasmineRequire('minijasminenode');
 	var color = process.argv.indexOf('--no-color') === -1;
+	var reporter = options.reporter;
 
-	if (options.reporter) {
-		if (options.reporter instanceof Array) {
-			var reporters = options.reporter;
-			for (var i = 0; i < reporters.length; i++) {
-				miniJasmineLib.addReporter(reporters[i]);
-			}
-		} else {
-			miniJasmineLib.addReporter(options.reporter);
-		}
+	if (reporter) {
+		(Array.isArray(reporter) ? reporter : [reporter]).forEach(miniJasmineLib.addReporter);
 	}
 
 	return through.obj(function (file, enc, cb) {
