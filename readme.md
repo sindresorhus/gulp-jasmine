@@ -1,6 +1,6 @@
 # [gulp](https://github.com/wearefractal/gulp)-jasmine [![Build Status](https://secure.travis-ci.org/sindresorhus/gulp-jasmine.png?branch=master)](http://travis-ci.org/sindresorhus/gulp-jasmine)
 
-> Run [Jasmine](http://visionmedia.github.io/jasmine/) tests with [minijasminenode](https://github.com/juliemr/minijasminenode) *(Jasmine 1.3)*
+> Run [Jasmine](http://jasmine.github.io/1.3/introduction.html) tests with [minijasminenode](https://github.com/juliemr/minijasminenode) *(Jasmine 1.3)*
 
 *Issues with the output should be reported on the minijasminenode [issue tracker](https://github.com/juliemr/minijasminenode).*
 
