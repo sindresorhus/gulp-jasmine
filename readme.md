@@ -1,4 +1,4 @@
-# [gulp](https://github.com/wearefractal/gulp)-jasmine [![Build Status](https://secure.travis-ci.org/sindresorhus/gulp-jasmine.png?branch=master)](http://travis-ci.org/sindresorhus/gulp-jasmine)
+# [gulp](http://gulpjs.com)-jasmine [![Build Status](https://travis-ci.org/sindresorhus/gulp-jasmine.svg?branch=master)](https://travis-ci.org/sindresorhus/gulp-jasmine)
 
 > Run [Jasmine](http://jasmine.github.io/1.3/introduction.html) tests with [minijasminenode](https://github.com/juliemr/minijasminenode) *(Jasmine 1.3)*
 
@@ -7,14 +7,12 @@
 
 ## Install
 
-Install with [npm](https://npmjs.org/package/gulp-jasmine)
-
-```
-npm install --save-dev gulp-jasmine
+```bash
+$ npm install --save-dev gulp-jasmine
 ```
 
 
-## Example
+## Usage
 
 ```js
 var gulp = require('gulp');
@@ -25,6 +23,7 @@ gulp.task('default', function () {
 		.pipe(jasmine());
 });
 ```
+
 
 ## API
 
@@ -62,4 +61,4 @@ Time to wait in milliseconds before a test automatically fails.
 
 ## License
 
-MIT © [Sindre Sorhus](http://sindresorhus.com)
+[MIT](http://opensource.org/licenses/MIT) © [Sindre Sorhus](http://sindresorhus.com)
