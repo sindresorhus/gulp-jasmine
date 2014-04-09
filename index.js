@@ -34,13 +34,20 @@ module.exports = function (options) {
 		cb();
 	}, function (cb) {
 		try {
-	        var onComplete = options.onComplete ?  options.onComplete :  function() { cb(); };
-            miniJasmineLib.executeSpecs({
+	        miniJasmineLib.executeSpecs({
 				isVerbose: options.verbose,
 				includeStackTrace: options.includeStackTrace,
 				defaultTimeoutInterval: options.timeout,
-				onComplete: onComplete,
-				showColors: color
+				showColors: color,
+				onComplete: function (arg) {
+					var failedCount = arg.env.currentSpec.results().failedCount;
+
+					if (failedCount > 0) {
+						this.emit('error', new gutil.PluginError('gulp-jasmine', failedCount + ' failure'));
+					}
+
+					cb();
+				}.bind(this)
 			});
 		} catch (err) {
 			this.emit('error', new gutil.PluginError('gulp-jasmine', err));
