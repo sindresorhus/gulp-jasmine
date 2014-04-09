@@ -11,7 +11,6 @@ module.exports = function (options) {
 	var miniJasmineLib = jasmineRequire('minijasminenode');
 	var color = process.argv.indexOf('--no-color') === -1;
 	var reporter = options.reporter;
-	var onComplete = options.onComplete ?  options.onComplete :  function() { cb() };
 
 	if (reporter) {
 		(Array.isArray(reporter) ? reporter : [reporter]).forEach(miniJasmineLib.addReporter);
@@ -35,7 +34,8 @@ module.exports = function (options) {
 		cb();
 	}, function (cb) {
 		try {
-			miniJasmineLib.executeSpecs({
+	        var onComplete = options.onComplete ?  options.onComplete :  function() { cb(); };
+            miniJasmineLib.executeSpecs({
 				isVerbose: options.verbose,
 				includeStackTrace: options.includeStackTrace,
 				defaultTimeoutInterval: options.timeout,
