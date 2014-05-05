@@ -13,7 +13,9 @@ module.exports = function (options) {
 	var reporter = options.reporter;
 
 	if (reporter) {
-		(Array.isArray(reporter) ? reporter : [reporter]).forEach(miniJasmineLib.addReporter);
+		(Array.isArray(reporter) ? reporter : [reporter]).forEach(function(element) {
+            		jasmine.getEnv().reporter.addReporter(element);
+        	});
 	}
 
 	return through.obj(function (file, enc, cb) {
