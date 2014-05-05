@@ -33,10 +33,10 @@
     "tap"
   ],
   "dependencies": {
-    "gulp-util": "~2.2.0",
-    "through2": "~0.4.0",
-    "require-like": "~0.1.2",
-    "minijasminenode": "~0.2.7"
+    "gulp-util": "^2.2.0",
+    "minijasminenode": "^0.4.0",
+    "require-like": "^0.1.2",
+    "through2": "~0.4.0"
   },
   "devDependencies": {
     "mocha": "*"
