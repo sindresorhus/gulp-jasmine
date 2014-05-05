@@ -40,7 +40,7 @@ module.exports = function (options) {
 				defaultTimeoutInterval: options.timeout,
 				showColors: color,
 				onComplete: function (arg) {
-					var failedCount = arg.env.currentSpec.results().failedCount;
+					var failedCount = arg.env.currentRunner().results().failedCount;
 
 					if (failedCount > 0) {
 						this.emit('error', new gutil.PluginError('gulp-jasmine', failedCount + ' failure'));
