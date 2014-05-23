@@ -1,7 +1,7 @@
 'use strict';
 var assert = require('assert');
 var gutil = require('gulp-util');
-var jasmine = require('./index');
+var jasmine = require('../index');
 var through2 = require('through2');
 var out = process.stdout.write.bind(process.stdout);
 
@@ -9,9 +9,9 @@ it('should run unit test and pass', function (cb) {
 	var stream = jasmine({verbose: true});
 
 	process.stdout.write = function (str) {
-		out(str);
+		// out(str);
 
-		if (/should pass/.test(str)) {
+		if (/1 spec, 0 failures/.test(str)) {
 			assert(true);
 			process.stdout.write = out;
 			cb();
@@ -21,8 +21,8 @@ it('should run unit test and pass', function (cb) {
 	stream.write(new gutil.File({
 		path: 'fixture.js',
 		contents: new Buffer('')
-	}));
 
+	}));
 	stream.end();
 });
 
@@ -33,7 +33,8 @@ it('should run the test only once even if called in succession', function (done)
 		cb();
 	}, function (cb) {
 		process.stdout.write = out;
-		assert.equal(output.match(/should pass/g).length, 1);
+		// out(output);
+		assert.equal(output.match(/1 spec, 0 failures/g).length, 1);
 		done();
 		cb();
 	});
@@ -51,3 +52,5 @@ it('should run the test only once even if called in succession', function (done)
 
 	stream.end();
 });
+
+gutil.log("end: test suite !");
