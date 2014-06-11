@@ -13,7 +13,7 @@
     "node": ">=0.10.0"
   },
   "scripts": {
-    "test": "mocha"
+    "test": "jasmine"
   },
   "files": [
     "index.js"
@@ -36,9 +36,9 @@
     "gulp-util": "^2.2.0",
     "minijasminenode": "^0.4.0",
     "require-like": "^0.1.2",
-    "through2": "~0.4.0"
-  },
-  "devDependencies": {
-    "mocha": "*"
+    "through2": "~0.4.0",
+    "jasmine-core": "https://github.com/pivotal/jasmine/archive/jasmine-node2.tar.gz",
+    "jasmine": "https://github.com/pivotal/jasmine-npm/archive/master.tar.gz",
+    "commander": "~2.1.0"
   }
 }
