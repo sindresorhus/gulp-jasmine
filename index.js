@@ -37,7 +37,7 @@ module.exports = function (options) {
 		cb();
 	}, function (cb) {
 		try {
-			miniJasmineLib.executeSpecs({
+	        miniJasmineLib.executeSpecs({
 				isVerbose: options.verbose,
 				includeStackTrace: options.includeStackTrace,
 				defaultTimeoutInterval: options.timeout,
