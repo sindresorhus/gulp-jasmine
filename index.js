@@ -2,29 +2,32 @@
 var path = require('path');
 var gutil = require('gulp-util');
 var through = require('through2');
-var requireLike = require('require-like');
-var jasmineRequire = requireLike(require.resolve('minijasminenode'), true);
+var requireUncached = require('require-uncached');
 
 module.exports = function (options) {
 	options = options || {};
 
-	var miniJasmineLib = jasmineRequire('minijasminenode');
+	var miniJasmineLib = requireUncached('minijasminenode2');
 	var color = process.argv.indexOf('--no-color') === -1;
 	var reporter = options.reporter;
 
 	if (reporter) {
-		(Array.isArray(reporter) ? reporter : [reporter]).forEach(miniJasmineLib.addReporter);
+		(Array.isArray(reporter) ? reporter : [reporter]).forEach(function (el) {
+			miniJasmineLib.addReporter(el);
+		});
 	}
 
 	return through.obj(function (file, enc, cb) {
 		if (file.isNull()) {
 			this.push(file);
-			return cb();
+			cb();
+			return;
 		}
 
 		if (file.isStream()) {
 			this.emit('error', new gutil.PluginError('gulp-jasmine', 'Streaming not supported'));
-			return cb();
+			cb();
+			return;
 		}
 
 		delete require.cache[require.resolve(path.resolve(file.path))];
@@ -39,11 +42,9 @@ module.exports = function (options) {
 				includeStackTrace: options.includeStackTrace,
 				defaultTimeoutInterval: options.timeout,
 				showColors: color,
-				onComplete: function (arg) {
-					var failedCount = arg.env.currentRunner().results().failedCount;
-
-					if (failedCount > 0) {
-						this.emit('error', new gutil.PluginError('gulp-jasmine', failedCount + ' failure'));
+				onComplete: function (passed) {
+					if (!passed) {
+						this.emit('error', new gutil.PluginError('gulp-jasmine', 'Tests failed'));
 					}
 
 					cb();

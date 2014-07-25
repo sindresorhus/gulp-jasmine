@@ -1,13 +1,13 @@
 # [gulp](http://gulpjs.com)-jasmine [![Build Status](https://travis-ci.org/sindresorhus/gulp-jasmine.svg?branch=master)](https://travis-ci.org/sindresorhus/gulp-jasmine)
 
-> Run [Jasmine](http://jasmine.github.io/1.3/introduction.html) tests with [minijasminenode](https://github.com/juliemr/minijasminenode) *(Jasmine 1.3)*
+> Run [Jasmine](http://jasmine.github.io/2.0/introduction.html) tests with [minijasminenode](https://github.com/juliemr/minijasminenode) *(Jasmine 2.0)*
 
 *Issues with the output should be reported on the minijasminenode [issue tracker](https://github.com/juliemr/minijasminenode).*
 
 
 ## Install
 
-```bash
+```sh
 $ npm install --save-dev gulp-jasmine
 ```
 
@@ -33,27 +33,27 @@ gulp.task('default', function () {
 
 ##### reporter
 
-Type: `Object`, `Array` of `Objects`
+Type: `object`, `array` of `objects`
 
-Reporter(s) to use.
+Reporters to use.
 
 ##### verbose
 
-Type: `Boolean`  
+Type: `boolean`  
 Default: `false`
 
 Display spec names.
 
 ##### includeStackTrace
 
-Type: `Boolean`  
+Type: `boolean`  
 Default: `false`
 
 Include stack traces in failures.
 
 ##### timeout
 
-Type: `Number`  
+Type: `number`  
 Default `5000`
 
 Time to wait in milliseconds before a test automatically fails.
@@ -61,4 +61,4 @@ Time to wait in milliseconds before a test automatically fails.
 
 ## License
 
-[MIT](http://opensource.org/licenses/MIT) © [Sindre Sorhus](http://sindresorhus.com)
+MIT © [Sindre Sorhus](http://sindresorhus.com)
