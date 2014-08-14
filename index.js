@@ -19,22 +19,19 @@ module.exports = function (options) {
 
 	return through.obj(function (file, enc, cb) {
 		if (file.isNull()) {
-			this.push(file);
-			cb();
+			cb(null, file);
 			return;
 		}
 
 		if (file.isStream()) {
-			this.emit('error', new gutil.PluginError('gulp-jasmine', 'Streaming not supported'));
-			cb();
+			cb(new gutil.PluginError('gulp-jasmine', 'Streaming not supported'));
 			return;
 		}
 
 		delete require.cache[require.resolve(path.resolve(file.path))];
 		miniJasmineLib.addSpecs(file.path);
 
-		this.push(file);
-		cb();
+		cb(null, file);
 	}, function (cb) {
 		try {
 			miniJasmineLib.executeSpecs({
@@ -43,16 +40,13 @@ module.exports = function (options) {
 				defaultTimeoutInterval: options.timeout,
 				showColors: color,
 				onComplete: function (passed) {
-					if (!passed) {
-						this.emit('error', new gutil.PluginError('gulp-jasmine', 'Tests failed'));
-					}
-
-					cb();
-				}.bind(this)
+					cb(passed ? null : new gutil.PluginError('gulp-jasmine', 'Tests failed', {
+						showStack: false
+					}));
+				}
 			});
 		} catch (err) {
-			this.emit('error', new gutil.PluginError('gulp-jasmine', err));
-			cb();
+			cb(new gutil.PluginError('gulp-jasmine', err));
 		}
 	});
 };
