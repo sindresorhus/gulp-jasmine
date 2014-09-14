@@ -29,17 +29,18 @@ module.exports = function (options) {
 		}
 
 		/**
-		 * Get the cacheobkect of the specs.js file,
-		 * get it's children and delete the childrens cache
+		 * Get the cache object of the specs.js file,
+		 * get its children and delete the childrens cache
 		 */
-		var files = require.cache[require.resolve(path.resolve(file.path))];
+		var modId = require.resolve(path.resolve(file.path));
+		var files = require.cache[modId];
 		if (typeof files !== 'undefined') {
 			for (var i in files.children) {
 				delete require.cache[files.children[i].id];
 			}
 		}
 
-		delete require.cache[require.resolve(path.resolve(file.path))];
+		delete require.cache[modId];
 		miniJasmineLib.addSpecs(file.path);
 
 		cb(null, file);
