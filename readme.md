@@ -37,6 +37,13 @@ Type: `object`, `array` of `objects`
 
 Reporters to use.
 
+##### silent
+
+Type: `boolean`
+Default: `false`
+
+Display nothing during the tests run.
+
 ##### verbose
 
 Type: `boolean`  
