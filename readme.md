@@ -58,6 +58,13 @@ Default `5000`
 
 Time to wait in milliseconds before a test automatically fails.
 
+##### forceExit
+
+Type: `boolean`  
+Default: `false`
+
+Force exit once tests complete.
+
 
 ## License
 
