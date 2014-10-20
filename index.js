@@ -55,6 +55,13 @@ module.exports = function (options) {
 					cb(passed ? null : new gutil.PluginError('gulp-jasmine', 'Tests failed', {
 						showStack: false
 					}));
+					
+					if (passed && options.forceExit) {
+			            process.exit(0);
+			        }
+			        else if (! passed && options.forceExit) {
+			            process.exit(1);
+			        }
 				}
 			});
 		} catch (err) {
