@@ -3,5 +3,7 @@ var gulp = require('gulp');
 var jasmine = require('./');
 
 gulp.task('default', function () {
-	return gulp.src('fixture.js').pipe(jasmine());
+	return gulp.src('fixture.js').pipe(jasmine({
+		timeout: 10000
+	}));
 });

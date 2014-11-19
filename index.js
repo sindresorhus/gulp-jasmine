@@ -7,13 +7,20 @@ var requireUncached = require('require-uncached');
 module.exports = function (options) {
 	options = options || {};
 
-	var miniJasmineLib = requireUncached('minijasminenode2');
+
+	var Jasmine = requireUncached('jasmine');
+	var jasmine = new Jasmine();
+
+	if (options.timeout) {
+		jasmine.jasmine.DEFAULT_TIMEOUT_INTERVAL = options.timeout;
+	}
+
 	var color = process.argv.indexOf('--no-color') === -1;
 	var reporter = options.reporter;
 
 	if (reporter) {
 		(Array.isArray(reporter) ? reporter : [reporter]).forEach(function (el) {
-			miniJasmineLib.addReporter(el);
+			jasmine.addReporter(el);
 		});
 	}
 
@@ -41,15 +48,14 @@ module.exports = function (options) {
 		}
 
 		delete require.cache[modId];
-		miniJasmineLib.addSpecs(file.path);
+		jasmine.addSpecFile(file.path);
 
 		cb(null, file);
 	}, function (cb) {
 		try {
-			miniJasmineLib.executeSpecs({
-				isVerbose: options.verbose,
-				includeStackTrace: options.includeStackTrace,
-				defaultTimeoutInterval: options.timeout,
+			jasmine.configureDefaultReporter({
+				// isVerbose: options.verbose, // Not supported by the reporter
+				// includeStackTrace: options.includeStackTrace, // Not supported by the reporter
 				showColors: color,
 				onComplete: function (passed) {
 					cb(passed ? null : new gutil.PluginError('gulp-jasmine', 'Tests failed', {
@@ -57,6 +63,7 @@ module.exports = function (options) {
 					}));
 				}
 			});
+			jasmine.execute()
 		} catch (err) {
 			cb(new gutil.PluginError('gulp-jasmine', err));
 		}
