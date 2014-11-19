@@ -37,9 +37,10 @@ module.exports = function (options) {
 
 		/**
 		 * Get the cache object of the specs.js file,
-		 * get its children and delete the childrens cache
+		 * get its children and delete the children cache
 		 */
-		var modId = require.resolve(path.resolve(file.path));
+		var resolvedPath = path.resolve(file.path);
+		var modId = require.resolve(resolvedPath);
 		var files = require.cache[modId];
 		if (typeof files !== 'undefined') {
 			for (var i in files.children) {
@@ -48,7 +49,7 @@ module.exports = function (options) {
 		}
 
 		delete require.cache[modId];
-		jasmine.addSpecFile(file.path);
+		jasmine.addSpecFile(resolvedPath);
 
 		cb(null, file);
 	}, function (cb) {
