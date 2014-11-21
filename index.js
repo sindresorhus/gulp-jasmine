@@ -55,8 +55,6 @@ module.exports = function (options) {
 	}, function (cb) {
 		try {
 			jasmine.configureDefaultReporter({
-				// isVerbose: options.verbose, // Not supported by the reporter
-				// includeStackTrace: options.includeStackTrace, // Not supported by the reporter
 				showColors: color,
 				onComplete: function (passed) {
 					cb(passed ? null : new gutil.PluginError('gulp-jasmine', 'Tests failed', {

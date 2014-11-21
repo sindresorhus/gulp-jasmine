@@ -4,24 +4,24 @@ describe('fixture', function () {
 	});
 });
 
-describe("beforeAll", function () {
+describe('beforeAll', function () {
 	var i = 0;
 
 	beforeAll(function () {
 		i++;
 	});
 
-	it("should be called first", function () {
+	it('should be called first', function () {
 		expect(i).toBe(1);
 	});
 
-	it("should be called once", function () {
+	it('should be called once', function () {
 		expect(i).toBe(1);
 	});
 });
 
-xdescribe("the timeout", function () {
-	it("should pass", function (done) {
+xdescribe('the timeout', function () {
+	it('should pass', function (done) {
 		expect(1).toBe(1);
 
 		setTimeout(function () {
