@@ -52,20 +52,6 @@ gulp.task('default', function () {
 
 [Creating your own reporter.](http://jasmine.github.io/2.1/custom_reporter.html)
 
-##### verbose
-
-Type: `boolean`  
-Default: `false`
-
-Display spec names.
-
-##### includeStackTrace
-
-Type: `boolean`  
-Default: `false`
-
-Include stack traces in failures.
-
 ##### timeout
 
 Type: `number`  

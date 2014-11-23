@@ -2,18 +2,23 @@
 var path = require('path');
 var gutil = require('gulp-util');
 var through = require('through2');
-var requireUncached = require('require-uncached');
+var Jasmine = require('jasmine');
 
 module.exports = function (options) {
 	options = options || {};
 
-	var miniJasmineLib = requireUncached('minijasminenode2');
+	var jasmine = new Jasmine();
+
+	if (options.timeout) {
+		jasmine.jasmine.DEFAULT_TIMEOUT_INTERVAL = options.timeout;
+	}
+
 	var color = process.argv.indexOf('--no-color') === -1;
 	var reporter = options.reporter;
 
 	if (reporter) {
 		(Array.isArray(reporter) ? reporter : [reporter]).forEach(function (el) {
-			miniJasmineLib.addReporter(el);
+			jasmine.addReporter(el);
 		});
 	}
 
@@ -30,9 +35,10 @@ module.exports = function (options) {
 
 		/**
 		 * Get the cache object of the specs.js file,
-		 * get its children and delete the childrens cache
+		 * get its children and delete the children cache
 		 */
-		var modId = require.resolve(path.resolve(file.path));
+		var resolvedPath = path.resolve(file.path);
+		var modId = require.resolve(resolvedPath);
 		var files = require.cache[modId];
 		if (typeof files !== 'undefined') {
 			for (var i in files.children) {
@@ -41,15 +47,12 @@ module.exports = function (options) {
 		}
 
 		delete require.cache[modId];
-		miniJasmineLib.addSpecs(file.path);
+		jasmine.addSpecFile(resolvedPath);
 
 		cb(null, file);
 	}, function (cb) {
 		try {
-			miniJasmineLib.executeSpecs({
-				isVerbose: options.verbose,
-				includeStackTrace: options.includeStackTrace,
-				defaultTimeoutInterval: options.timeout,
+			jasmine.configureDefaultReporter({
 				showColors: color,
 				onComplete: function (passed) {
 					cb(passed ? null : new gutil.PluginError('gulp-jasmine', 'Tests failed', {
@@ -57,6 +60,7 @@ module.exports = function (options) {
 					}));
 				}
 			});
+			jasmine.execute();
 		} catch (err) {
 			cb(new gutil.PluginError('gulp-jasmine', err));
 		}
