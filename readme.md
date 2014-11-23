@@ -37,6 +37,21 @@ Type: `object`, `array` of `objects`
 
 Reporters to use.
 
+```js
+var gulp = require('gulp');
+var jasmine = require('gulp-jasmine');
+var reporters = require('jasmine-reporters');
+
+gulp.task('default', function () {
+	return gulp.src('spec/test.js')
+		.pipe(jasmine({
+			reporter: new reporters.JUnitXmlReporter()
+		}));
+});
+```
+
+[Creating your own reporter.](http://jasmine.github.io/2.1/custom_reporter.html)
+
 ##### verbose
 
 Type: `boolean`  
