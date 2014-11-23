@@ -2,13 +2,11 @@
 var path = require('path');
 var gutil = require('gulp-util');
 var through = require('through2');
-var requireUncached = require('require-uncached');
+var Jasmine = require('jasmine');
 
 module.exports = function (options) {
 	options = options || {};
 
-
-	var Jasmine = requireUncached('jasmine');
 	var jasmine = new Jasmine();
 
 	if (options.timeout) {
@@ -62,7 +60,7 @@ module.exports = function (options) {
 					}));
 				}
 			});
-			jasmine.execute()
+			jasmine.execute();
 		} catch (err) {
 			cb(new gutil.PluginError('gulp-jasmine', err));
 		}
