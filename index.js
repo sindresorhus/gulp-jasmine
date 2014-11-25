@@ -52,14 +52,16 @@ module.exports = function (options) {
 		cb(null, file);
 	}, function (cb) {
 		try {
-			jasmine.configureDefaultReporter({
-				showColors: color,
-				onComplete: function (passed) {
-					cb(passed ? null : new gutil.PluginError('gulp-jasmine', 'Tests failed', {
-						showStack: false
-					}));
-				}
-			});
+			if (!reporter) {
+				jasmine.configureDefaultReporter({
+					showColors: color,
+					onComplete: function (passed) {
+						cb(passed ? null : new gutil.PluginError('gulp-jasmine', 'Tests failed', {
+							showStack: false
+						}));
+					}
+				});
+			}
 			jasmine.execute();
 		} catch (err) {
 			cb(new gutil.PluginError('gulp-jasmine', err));
