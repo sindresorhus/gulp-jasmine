@@ -4,6 +4,16 @@ var gutil = require('gulp-util');
 var through = require('through2');
 var Jasmine = require('jasmine');
 
+function deleteRequireCache( id ) {
+	var files = require.cache[ id ];
+	if (typeof files !== 'undefined') {
+		for (var i in files.children) {
+			deleteRequireCache( files.children[i].id );
+		}
+		delete require.cache[ id ];
+	}
+}
+
 module.exports = function (options) {
 	options = options || {};
 
@@ -35,18 +45,12 @@ module.exports = function (options) {
 
 		/**
 		 * Get the cache object of the specs.js file,
-		 * get its children and delete the children cache
+		 * delete it and its children recursively from cache
 		 */
 		var resolvedPath = path.resolve(file.path);
 		var modId = require.resolve(resolvedPath);
-		var files = require.cache[modId];
-		if (typeof files !== 'undefined') {
-			for (var i in files.children) {
-				delete require.cache[files.children[i].id];
-			}
-		}
+		deleteRequireCache( modId );
 
-		delete require.cache[modId];
 		jasmine.addSpecFile(resolvedPath);
 
 		cb(null, file);
