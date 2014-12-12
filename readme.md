@@ -31,6 +31,20 @@ gulp.task('default', function () {
 
 #### options
 
+##### verbose
+
+Type: `boolean`  
+Default: `false`
+
+Display spec names in default reporter.
+
+##### includeStackTrace
+
+Type: `boolean`  
+Default: `false`
+
+Include stack traces in failures in default reporter.
+
 ##### reporter
 
 Type: `object`, `array` of `objects`

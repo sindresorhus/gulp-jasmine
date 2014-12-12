@@ -6,12 +6,15 @@ var jasmine = require('./');
 var out = process.stdout.write.bind(process.stdout);
 
 it('should run unit test and pass', function (cb) {
-	var stream = jasmine({timeout: 9000});
+	var stream = jasmine({
+		timeout: 9000,
+		verbose: true
+	});
 
 	process.stdout.write = function (str) {
 		out(str);
 
-		if (/3 specs, 0 failures/.test(str)) {
+		if (/should pass/.test(str)) {
 			assert(true);
 			process.stdout.write = out;
 			cb();
@@ -27,13 +30,16 @@ it('should run unit test and pass', function (cb) {
 });
 
 it('should run the test only once even if called in succession', function (done) {
-	var stream = jasmine({timeout: 9000});
+	var stream = jasmine({
+		timeout: 9000,
+		verbose: true
+	});
 	var output = '';
 	var reader = through2.obj(function (file, enc, cb) {
 		cb();
 	}, function (cb) {
 		process.stdout.write = out;
-		assert.equal(output.match(/3 specs, 0 failures/g).length, 1);
+		assert.equal(output.match(/should pass/g).length, 1);
 		done();
 		cb();
 	});
