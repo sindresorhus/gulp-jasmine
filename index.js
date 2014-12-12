@@ -5,6 +5,9 @@ var through = require('through2');
 var Jasmine = require('jasmine');
 
 function deleteRequireCache( id ) {
+	// recursively delete source code to be tested, 
+	// but skip mature code loaded from node_modules
+	if(id.indexOf('node_modules') >= 0) return;
 	var files = require.cache[ id ];
 	if (typeof files !== 'undefined') {
 		for (var i in files.children) {
