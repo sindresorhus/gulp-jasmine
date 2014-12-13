@@ -39,13 +39,15 @@ Reporters to use.
 
 ```js
 var gulp = require('gulp');
-var jasmine = require('gulp-jasmine');
-var reporters = require('jasmine-reporters');
+var gulpJasmine = require('gulp-jasmine');
+
+GLOBAL.jasmine = require('jasmine');
+require('jasmine-reporters');
 
 gulp.task('default', function () {
 	return gulp.src('spec/test.js')
-		.pipe(jasmine({
-			reporter: new reporters.JUnitXmlReporter()
+		.pipe(gulpJasmine({
+			reporter: new jasmine.JUnitXmlReporter()
 		}));
 });
 ```
