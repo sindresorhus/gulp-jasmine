@@ -3,7 +3,7 @@ var path = require('path');
 var gutil = require('gulp-util');
 var through = require('through2');
 var Jasmine = require('jasmine');
-var SilentReporter = require('./silentReporter');
+var SilentReporter = require('./silent-reporter');
 var Reporter = require('jasmine-terminal-reporter');
 
 module.exports = function (options) {
