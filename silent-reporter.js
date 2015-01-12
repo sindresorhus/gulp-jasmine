@@ -1,18 +1,23 @@
+'use strict';
 var gutil = require('gulp-util');
 
-module.exports = function(done) {
+module.exports = function (cb) {
 	var failureCount = 0;
 
-	this.specDone = function(result) {
+	this.specDone = function (result) {
 		if (result.status === 'failed') {
 			failureCount++;
 		}
 	};
-	
-	this.jasmineDone = function() {
-		var result = failureCount === 0 ? null : new gutil.PluginError('gulp-jasmine', 'Tests failed', {
-			showStack: false
-		});
-		done(result);
+
+	this.jasmineDone = function () {
+		if (failureCount > 0) {
+			cb(new gutil.PluginError('gulp-jasmine', 'Tests failed', {
+				showStack: false
+			}));
+			return;
+		}
+
+		cb();
 	};
 };
