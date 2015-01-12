@@ -6,16 +6,19 @@ var Jasmine = require('jasmine');
 var Reporter = require('jasmine-terminal-reporter');
 var SilentReporter = require('./silent-reporter');
 
-function deleteRequireCache( id ) {
-	// recursively delete source code to be tested, 
-	// but skip mature code loaded from node_modules
-	if(id.indexOf('node_modules') >= 0) return;
-	var files = require.cache[ id ];
-	if (typeof files !== 'undefined') {
-		for (var i in files.children) {
-			deleteRequireCache( files.children[i].id );
+function deleteRequireCache(id) {
+	if (id.indexOf('node_modules') !== -1) {
+		return;
+	}
+
+	var files = require.cache[id];
+
+	if (files !== undefined) {
+		for (var file in files.children) {
+			deleteRequireCache(files.children[file].id);
 		}
-		delete require.cache[ id ];
+
+		delete require.cache[id];
 	}
 }
 
@@ -54,13 +57,11 @@ module.exports = function (options) {
 			return;
 		}
 
-		/**
-		 * Get the cache object of the specs.js file,
-		 * delete it and its children recursively from cache
-		 */
+		// get the cache object of the specs.js file,
+		// delete it and its children recursively from cache
 		var resolvedPath = path.resolve(file.path);
 		var modId = require.resolve(resolvedPath);
-		deleteRequireCache( modId );
+		deleteRequireCache(modId);
 
 		jasmine.addSpecFile(resolvedPath);
 
