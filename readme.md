@@ -1,6 +1,6 @@
-# [gulp](http://gulpjs.com)-jasmine [![Build Status](https://travis-ci.org/sindresorhus/gulp-jasmine.svg?branch=master)](https://travis-ci.org/sindresorhus/gulp-jasmine)
+# gulp-jasmine [![Build Status](https://travis-ci.org/sindresorhus/gulp-jasmine.svg?branch=master)](https://travis-ci.org/sindresorhus/gulp-jasmine)
 
-> Run [Jasmine](http://jasmine.github.io/2.0/introduction.html) tests with [minijasminenode](https://github.com/juliemr/minijasminenode) *(Jasmine 2.0)*
+> Run [Jasmine 2](http://jasmine.github.io/2.1/introduction.html) tests
 
 *Issues with the output should be reported on the minijasminenode [issue tracker](https://github.com/juliemr/minijasminenode).*
 
