@@ -19,6 +19,19 @@ function deleteRequireCache( id ) {
 	}
 }
 
+function deleteRequireCache( id ) {
+	// recursively delete source code to be tested, 
+	// but skip mature code loaded from node_modules
+	if(id.indexOf('node_modules') >= 0) return;
+	var files = require.cache[ id ];
+	if (typeof files !== 'undefined') {
+		for (var i in files.children) {
+			deleteRequireCache( files.children[i].id );
+		}
+		delete require.cache[ id ];
+	}
+}
+
 module.exports = function (options) {
 	options = options || {};
 
