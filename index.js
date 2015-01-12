@@ -3,6 +3,8 @@ var path = require('path');
 var gutil = require('gulp-util');
 var through = require('through2');
 var Jasmine = require('jasmine');
+var SilentReporter = require('./silent-reporter');
+var Reporter = require('jasmine-terminal-reporter');
 
 module.exports = function (options) {
 	options = options || {};
@@ -20,6 +22,12 @@ module.exports = function (options) {
 		(Array.isArray(reporter) ? reporter : [reporter]).forEach(function (el) {
 			jasmine.addReporter(el);
 		});
+	} else {
+		jasmine.addReporter(new Reporter({
+			isVerbose: options.verbose,
+			showColors: color,
+			includeStackTrace: options.includeStackTrace
+		}));
 	}
 
 	return through.obj(function (file, enc, cb) {
@@ -52,14 +60,8 @@ module.exports = function (options) {
 		cb(null, file);
 	}, function (cb) {
 		try {
-			jasmine.configureDefaultReporter({
-				showColors: color,
-				onComplete: function (passed) {
-					cb(passed ? null : new gutil.PluginError('gulp-jasmine', 'Tests failed', {
-						showStack: false
-					}));
-				}
-			});
+			jasmine.addReporter(new SilentReporter(cb));
+
 			jasmine.execute();
 		} catch (err) {
 			cb(new gutil.PluginError('gulp-jasmine', err));

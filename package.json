@@ -16,7 +16,8 @@
     "test": "mocha"
   },
   "files": [
-    "index.js"
+    "index.js",
+    "silentReporter.js"
   ],
   "keywords": [
     "gulpplugin",
@@ -35,6 +36,7 @@
   "dependencies": {
     "gulp-util": "^3.0.0",
     "jasmine": "^2.1.0",
+    "jasmine-terminal-reporter": "^0.9.1",
     "through2": "^0.6.1"
   },
   "devDependencies": {
