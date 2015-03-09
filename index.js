@@ -24,7 +24,6 @@ function deleteRequireCache(id) {
 }
 
 module.exports = function (options) {
-	var jasmineAlreadyRunning = true;
 	options = options || {};
 
 	// Keep a reference to the jasmine instance that is created until it is executed to allow multiple pipes to jasmine-gulp to
@@ -35,7 +34,6 @@ module.exports = function (options) {
 	var jasmine = jasmineInstance;
 	if (!jasmine) {
 		jasmine = jasmineInstance = new Jasmine();
-		jasmineAlreadyRunning = false;
 
 		if (options.timeout) {
 			jasmine.jasmine.DEFAULT_TIMEOUT_INTERVAL = options.timeout;
@@ -78,7 +76,7 @@ module.exports = function (options) {
 		cb(null, file);
 	}, function (cb) {
 		try {
-			if (!jasmineAlreadyRunning) {
+			if (jasmineInstance) {
 				jasmineInstance = null; // release the global jasmine instance.
 				jasmine.addReporter(new SilentReporter(cb));
 				jasmine.execute();
