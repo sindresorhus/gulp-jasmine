@@ -7,7 +7,7 @@ var Reporter = require('jasmine-terminal-reporter');
 var SilentReporter = require('./silent-reporter');
 
 function deleteRequireCache(id) {
-	if (id.indexOf('node_modules') !== -1) {
+	if (id===undefined||id.indexOf('node_modules') !== -1) {
 		return;
 	}
 
