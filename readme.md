@@ -2,7 +2,7 @@
 
 > Run [Jasmine 2](http://jasmine.github.io/2.1/introduction.html) tests in Node.js
 
-*Issues with the output should be reported on the minijasminenode [issue tracker](https://github.com/juliemr/minijasminenode).*
+*Issues with the output should be reported on the Jasmine [issue tracker](https://github.com/jasmine/jasmine/issues).*
 
 
 ## Install
@@ -27,7 +27,7 @@ gulp.task('default', function () {
 
 ## API
 
-### jasmine(options)
+### jasmine([options])
 
 #### options
 
