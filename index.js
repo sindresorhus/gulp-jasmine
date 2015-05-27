@@ -25,7 +25,7 @@ function deleteRequireCache(id) {
 module.exports = function (options) {
 	options = options || {};
 
-	var jasmine = new Jasmine();
+	var jasmine = options.jasmine || new Jasmine();
 
 	if (options.timeout) {
 		jasmine.jasmine.DEFAULT_TIMEOUT_INTERVAL = options.timeout;
