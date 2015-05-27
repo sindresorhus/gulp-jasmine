@@ -73,6 +73,17 @@ Default `5000`
 
 Time to wait in milliseconds before a test automatically fails.
 
+##### jasmine
+
+Type: `object`
+
+Custom instance of the Jasmine class from [jasmine-npm module](https://github.com/jasmine/jasmine-npm). Can be created like
+
+```js
+var Jasmine = require('jasmine');
+var instance = new Jasmine();
+```
+
 
 ## License
 
