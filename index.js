@@ -1,5 +1,6 @@
 'use strict';
 var path = require('path');
+var arrify = require('arrify');
 var gutil = require('gulp-util');
 var through = require('through2');
 var Jasmine = require('jasmine');
@@ -35,7 +36,7 @@ module.exports = function (options) {
 	var reporter = options.reporter;
 
 	if (reporter) {
-		(Array.isArray(reporter) ? reporter : [reporter]).forEach(function (el) {
+		arrify(reporter).forEach(function (el) {
 			jasmine.addReporter(el);
 		});
 	} else {

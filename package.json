@@ -5,8 +5,8 @@
   "license": "MIT",
   "repository": "sindresorhus/gulp-jasmine",
   "author": {
-    "name": "Sindre Sorhus",
     "email": "sindresorhus@gmail.com",
+    "name": "Sindre Sorhus",
     "url": "http://sindresorhus.com"
   },
   "engines": {
@@ -20,20 +20,21 @@
     "silent-reporter.js"
   ],
   "keywords": [
+    "bdd",
+    "framework",
     "gulpplugin",
     "jasmine",
+    "qunit",
+    "runner",
+    "spec",
+    "tap",
+    "tdd",
     "test",
     "testing",
-    "unit",
-    "framework",
-    "runner",
-    "tdd",
-    "bdd",
-    "qunit",
-    "spec",
-    "tap"
+    "unit"
   ],
   "dependencies": {
+    "arrify": "^1.0.0",
     "gulp-util": "^3.0.0",
     "jasmine": "^2.1.0",
     "jasmine-terminal-reporter": "^0.9.1",
