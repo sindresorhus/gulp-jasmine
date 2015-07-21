@@ -1,51 +1,31 @@
 'use strict';
 var path = require('path');
-var arrify = require('arrify');
 var gutil = require('gulp-util');
 var through = require('through2');
-var Jasmine = require('jasmine');
+var arrify = require('arrify');
 var Reporter = require('jasmine-terminal-reporter');
-var SilentReporter = require('./silent-reporter');
-
-function deleteRequireCache(id) {
-	if (!id || id.indexOf('node_modules') !== -1) {
-		return;
-	}
-
-	var files = require.cache[id];
-
-	if (files !== undefined) {
-		for (var file in files.children) {
-			deleteRequireCache(files.children[file].id);
-		}
-
-		delete require.cache[id];
-	}
-}
 
 module.exports = function (options) {
+	var reporters;
 	options = options || {};
+	options.showColors = process.argv.indexOf('--no-color') === -1;
 
-	var jasmine = new Jasmine();
-
-	if (options.timeout) {
-		jasmine.jasmine.DEFAULT_TIMEOUT_INTERVAL = options.timeout;
-	}
-
-	var color = process.argv.indexOf('--no-color') === -1;
-	var reporter = options.reporter;
-
-	if (reporter) {
-		arrify(reporter).forEach(function (el) {
-			jasmine.addReporter(el);
-		});
+	if (options.reporter) {
+		reporters = arrify(options.reporter);
 	} else {
-		jasmine.addReporter(new Reporter({
+		reporters = [new Reporter({
 			isVerbose: options.verbose,
-			showColors: color,
+			showColors: options.showColors,
 			includeStackTrace: options.includeStackTrace
-		}));
+		})];
 	}
+
+	var runner = require('child_process').fork(path.join(__dirname, 'runner'));
+
+	runner.send({
+		type: 'instantiate',
+		options: options
+	});
 
 	return through.obj(function (file, enc, cb) {
 		if (file.isNull()) {
@@ -54,25 +34,40 @@ module.exports = function (options) {
 		}
 
 		if (file.isStream()) {
+			runner.kill();
 			cb(new gutil.PluginError('gulp-jasmine', 'Streaming not supported'));
 			return;
 		}
 
-		// get the cache object of the specs.js file,
-		// delete it and its children recursively from cache
-		var resolvedPath = path.resolve(file.path);
-		var modId = require.resolve(resolvedPath);
-		deleteRequireCache(modId);
-
-		jasmine.addSpecFile(resolvedPath);
+		runner.send({
+			type: 'addSpec',
+			path: path.resolve(file.path)
+		});
 
 		cb(null, file);
 	}, function (cb) {
-		try {
-			jasmine.addReporter(new SilentReporter(cb));
-			jasmine.execute();
-		} catch (err) {
-			cb(new gutil.PluginError('gulp-jasmine', err));
-		}
+		runner.on('message', function (message) {
+			switch (message.event) {
+				case 'success':
+					cb();
+					runner.kill();
+					break;
+				case 'error':
+					cb(new gutil.PluginError('gulp-jasmine', message.data));
+					runner.kill();
+					break;
+				default:
+					reporters.forEach(function (reporter) {
+						if (reporter[message.event]) {
+							reporter[message.event](message.data);
+						}
+					});
+			}
+
+		});
+
+		runner.send({
+			type: 'run'
+		});
 	});
 };
