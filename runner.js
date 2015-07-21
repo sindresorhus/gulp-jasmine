@@ -1,7 +1,4 @@
-var arrify = require('arrify');
-var gutil = require('gulp-util');
 var Jasmine = require('jasmine');
-var Reporter = require('jasmine-terminal-reporter');
 var SilentReporter = require('./silent-reporter');
 
 var jasmine;
@@ -13,18 +10,6 @@ function instantiate (options) {
 	if (options.timeout) {
 		jasmine.jasmine.DEFAULT_TIMEOUT_INTERVAL = options.timeout;
 	}
-
-	if (options.reporter) {
-		arrify(options.reporter).forEach(function (reporter) {
-			jasmine.addReporter(reporter);
-		});
-	} else {
-		jasmine.addReporter(new Reporter({
-			isVerbose: options.verbose,
-			showColors: options.showColors,
-			includeStackTrace: options.includeStackTrace
-		}));
-	}
 }
 
 function addSpec (path) {
@@ -34,14 +19,16 @@ function addSpec (path) {
 function run () {
 	try {
 		jasmine.addReporter(new SilentReporter(function (err) {
-			if (uncaughtError) {
-				err = new gutil.PluginError('gulp-jasmine', uncaughtError);
+			err = uncaughtError || err;
+			if (err) {
+				process.send({ event: 'error', data: err });
+			} else {
+				process.send({ event: 'success' })
 			}
-			process.send(err || null);
 		}));
 		jasmine.execute();
 	} catch (err) {
-		process.send(new gutil.PluginError('gulp-jasmine', err));
+		process.send({ event: 'error', data: err });
 	}
 }
 

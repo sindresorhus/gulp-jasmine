@@ -2,12 +2,25 @@
 var path = require('path');
 var gutil = require('gulp-util');
 var through = require('through2');
+var arrify = require('arrify');
+var Reporter = require('jasmine-terminal-reporter');
 
 module.exports = function (options) {
-	var runner = require('child_process').fork('./runner');
-
+	var reporters;
 	options = options || {};
 	options.showColors = process.argv.indexOf('--no-color') === -1;
+
+	if (options.reporter) {
+		reporters = arrify(options.reporter);
+	} else {
+		reporters = [new Reporter({
+			isVerbose: options.verbose,
+			showColors: options.showColors,
+			includeStackTrace: options.includeStackTrace
+		})];
+	}
+
+	var runner = require('child_process').fork(path.join(__dirname, 'runner'));
 
 	runner.send({
 		type: 'instantiate',
@@ -33,9 +46,24 @@ module.exports = function (options) {
 
 		cb(null, file);
 	}, function (cb) {
-		runner.on('message', function (err) {
-			cb(err);
-			runner.kill();
+		runner.on('message', function (message) {
+			switch (message.event) {
+				case 'success':
+					cb();
+					runner.kill();
+					break;
+				case 'error':
+					cb(new gutil.PluginError('gulp-jasmine', message.data));
+					runner.kill();
+					break;
+				default:
+					reporters.forEach(function (reporter) {
+						if (reporter[message.event]) {
+							reporter[message.event](message.data);
+						}
+					});
+			}
+
 		});
 
 		runner.send({
