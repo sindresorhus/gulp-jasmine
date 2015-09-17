@@ -72,7 +72,7 @@ module.exports = function (options) {
 			jasmine.addReporter(new SilentReporter(cb));
 			jasmine.execute();
 		} catch (err) {
-			cb(new gutil.PluginError('gulp-jasmine', err));
+			cb(new gutil.PluginError('gulp-jasmine', err, {showStack: true}));
 		}
 	});
 };
