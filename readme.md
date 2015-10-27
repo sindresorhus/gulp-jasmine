@@ -77,7 +77,7 @@ Time to wait in milliseconds before a test automatically fails.
 
 Type: `object`  
 
-If passed Jasmine's loadConfig will be called passing the provided object.
+If passed Jasmine's [loadConfig](http://jasmine.github.io/2.3/node.html#section-Load_configuration_from_a_file_or_from_an_object.) will be called passing the provided object.
 
 ## License
 
