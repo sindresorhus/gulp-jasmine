@@ -32,6 +32,10 @@ module.exports = function (options) {
 		jasmine.jasmine.DEFAULT_TIMEOUT_INTERVAL = options.timeout;
 	}
 
+	if (options.config) {
+		jasmine.loadConfig(options.config)
+	}
+
 	var color = process.argv.indexOf('--no-color') === -1;
 	var reporter = options.reporter;
 

@@ -73,6 +73,11 @@ Default `5000`
 
 Time to wait in milliseconds before a test automatically fails.
 
+##### config
+
+Type: `object`  
+
+If passed Jasmine's [loadConfig](http://jasmine.github.io/2.3/node.html#section-Load_configuration_from_a_file_or_from_an_object.) will be called passing the provided object.
 
 ## License
 
