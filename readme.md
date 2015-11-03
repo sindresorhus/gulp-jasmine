@@ -81,6 +81,13 @@ Type: `object`
 Passes the config to Jasmine's [loadConfig](http://jasmine.github.io/2.3/node.html#section-Load_configuration_from_a_file_or_from_an_object.) method.
 
 
+## FAQ
+
+### Babel
+
+Add `require('babel/register')` to the top of your `gulpfile.js`.
+
+
 ## License
 
 MIT © [Sindre Sorhus](http://sindresorhus.com)
