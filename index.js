@@ -73,6 +73,13 @@ module.exports = function (options) {
 		cb(null, file);
 	}, function (cb) {
 		try {
+			if (jasmine.helperFiles) {
+				jasmine.helperFiles.forEach(function (helper) {
+					var resolvedPath = path.resolve(helper);
+					var modId = require.resolve(resolvedPath);
+					deleteRequireCache(modId);
+				});
+			}
 			jasmine.addReporter(new SilentReporter(cb));
 			jasmine.execute();
 		} catch (err) {
