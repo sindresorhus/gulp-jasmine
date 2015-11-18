@@ -15,10 +15,10 @@ $ npm install --save-dev gulp-jasmine
 ## Usage
 
 ```js
-var gulp = require('gulp');
-var jasmine = require('gulp-jasmine');
+const gulp = require('gulp');
+const jasmine = require('gulp-jasmine');
 
-gulp.task('default', function () {
+gulp.task('default', () => {
 	return gulp.src('spec/test.js')
 		// gulp-jasmine works on filepaths so you can't have any plugins before it
 		.pipe(jasmine());
@@ -53,11 +53,11 @@ Type: `object`, `array` of `objects`
 Reporters to use.
 
 ```js
-var gulp = require('gulp');
-var jasmine = require('gulp-jasmine');
-var reporters = require('jasmine-reporters');
+const gulp = require('gulp');
+const jasmine = require('gulp-jasmine');
+const reporters = require('jasmine-reporters');
 
-gulp.task('default', function () {
+gulp.task('default', () => {
 	return gulp.src('spec/test.js')
 		.pipe(jasmine({
 			reporter: new reporters.JUnitXmlReporter()
@@ -85,7 +85,7 @@ Passes the config to Jasmine's [loadConfig](http://jasmine.github.io/2.3/node.ht
 
 ### Babel
 
-Add `require('babel/register')` to the top of your `gulpfile.js`.
+Add `require('babel-core/register');` to the top of your `gulpfile.js`. Make sure to read the [Babel docs](https://babeljs.io/docs/usage/require/).
 
 
 ## License
