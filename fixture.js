@@ -29,3 +29,9 @@ xdescribe('the timeout', function () {
 		}, 6000);
 	});
 });
+
+describe('custom matchers', function () {
+	it('should be able to run the custom matcher', function () {
+		expect(1).toBeTheNumberOne();
+	});
+});

@@ -5,11 +5,26 @@ var through2 = require('through2');
 var jasmine = require('./');
 var out = process.stdout.write.bind(process.stdout);
 
+var numberOneMatcher = function () {
+	return {
+		compare: function (value) {
+			var isOne = value === 1;
+			return {
+				pass: isOne,
+				message: isOne ? "Expected " + value + " not to be 1" : "Expected " + value + " to be 1"
+			};
+		}
+	}
+};
+
 describe('gulp-jasmine', function () {
 	beforeEach(function () {
 		this.stream = jasmine({
 			timeout: 9000,
-			verbose: true
+			verbose: true,
+			matchers: {
+				toBeTheNumberOne: numberOneMatcher
+			}
 		});
 
 		this.writeFileOnStream = function () {

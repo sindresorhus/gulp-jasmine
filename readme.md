@@ -34,14 +34,14 @@ gulp.task('default', () => {
 
 ##### verbose
 
-Type: `boolean`  
+Type: `boolean`
 Default: `false`
 
 Display spec names in default reporter.
 
 ##### includeStackTrace
 
-Type: `boolean`  
+Type: `boolean`
 Default: `false`
 
 Include stack traces in failures in default reporter.
@@ -67,9 +67,31 @@ gulp.task('default', () => {
 
 [Creating your own reporter.](http://jasmine.github.io/2.1/custom_reporter.html)
 
+##### matchers
+
+Type: `object`
+
+Matchers to use.
+
+```js
+const gulp = require('gulp');
+const jasmine = require('gulp-jasmine');
+const jasmineMatchers = require('jasmine-expect');
+
+gulp.task('default', () => {
+  return gulp.src('spec/test.js')
+    .pipe(jasmine({
+      matchers: jasmineMatchers
+    }));
+});
+```
+
+[Creating your own matchers.](http://jasmine.github.io/2.1/custom_matcher.html)
+
+
 ##### timeout
 
-Type: `number`  
+Type: `number`
 Default `5000`
 
 Time to wait in milliseconds before a test automatically fails.

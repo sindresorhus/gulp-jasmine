@@ -23,19 +23,7 @@ function deleteRequireCache(id) {
 	}
 }
 
-module.exports = function (options) {
-	options = options || {};
-
-	var jasmine = new Jasmine();
-
-	if (options.timeout) {
-		jasmine.jasmine.DEFAULT_TIMEOUT_INTERVAL = options.timeout;
-	}
-
-	if (options.config) {
-		jasmine.loadConfig(options.config)
-	}
-
+function addReporter(jasmine, options) {
 	var color = process.argv.indexOf('--no-color') === -1;
 	var reporter = options.reporter;
 
@@ -50,6 +38,33 @@ module.exports = function (options) {
 			includeStackTrace: options.includeStackTrace
 		}));
 	}
+}
+
+function addMatchers(jasmine, options) {
+	var matchers = options.matchers;
+
+	if (matchers) {
+		beforeEach(function () {
+			jasmine.addMatchers(matchers);
+		});
+	}
+}
+
+module.exports = function (options) {
+	options = options || {};
+
+	var jasmine = new Jasmine();
+
+	if (options.timeout) {
+		jasmine.jasmine.DEFAULT_TIMEOUT_INTERVAL = options.timeout;
+	}
+
+	if (options.config) {
+		jasmine.loadConfig(options.config)
+	}
+
+	addReporter(jasmine, options);
+	addMatchers(jasmine.jasmine, options);
 
 	return through.obj(function (file, enc, cb) {
 		if (file.isNull()) {
