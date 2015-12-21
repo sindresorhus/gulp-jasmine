@@ -5,55 +5,68 @@ var through2 = require('through2');
 var jasmine = require('./');
 var out = process.stdout.write.bind(process.stdout);
 
-it('should run unit test and pass', function (cb) {
-	var stream = jasmine({
-		timeout: 9000,
-		verbose: true
+describe('gulp-jasmine', function () {
+	beforeEach(function () {
+		this.stream = jasmine({
+			timeout: 9000,
+			verbose: true
+		});
+
+		this.writeFileOnStream = function () {
+			this.stream.write(new gutil.File({
+				path: 'fixture.js',
+				contents: new Buffer('')
+			}));
+
+			this.stream.end();
+		};
 	});
 
-	process.stdout.write = function (str) {
-		out(str);
+	describe('simple unit test', function () {
+		beforeEach(function () {
+			process.stdout.write = function (str) {
+				this.assertion(str);
+			}.bind(this);
+		});
 
-		if (/should pass/.test(str)) {
-			assert(true);
-			process.stdout.write = out;
-			cb();
-		}
-	};
+		it('should run and pass', function (done) {
+			this.assertion = function (str) {
+				if (/should pass/.test(str)) {
+					process.stdout.write = out;
+					assert(true);
+					done();
+				}
+			};
 
-	stream.write(new gutil.File({
-		path: 'fixture.js',
-		contents: new Buffer('')
-	}));
-
-	stream.end();
-});
-
-it('should run the test only once even if called in succession', function (done) {
-	var stream = jasmine({
-		timeout: 9000,
-		verbose: true
-	});
-	var output = '';
-	var reader = through2.obj(function (file, enc, cb) {
-		cb();
-	}, function (cb) {
-		process.stdout.write = out;
-		assert.equal(output.match(/should pass/g).length, 1);
-		done();
-		cb();
+			this.writeFileOnStream();
+		});
 	});
 
-	process.stdout.write = function (str) {
-		output += str;
-	};
+	describe('if called in succession', function () {
+		beforeEach(function () {
+			var output = '';
+			process.stdout.write = function (str) {
+				output += str;
+			};
 
-	stream.pipe(reader);
+			var reader = through2.obj(function (file, enc, cb) {
+				cb();
+			}, function (cb) {
+				this.assertion(output);
+				cb();
+			}.bind(this));
 
-	stream.write(new gutil.File({
-		path: 'fixture.js',
-		contents: new Buffer('')
-	}));
+			this.stream.pipe(reader);
+		});
 
-	stream.end();
+		it('should run the test only once', function (done) {
+			this.assertion = function (str) {
+				process.stdout.write = out;
+				assert.equal(str.match(/should pass/g).length, 1);
+				done();
+			};
+
+			this.writeFileOnStream();
+		});
+	});
 });
