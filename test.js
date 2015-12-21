@@ -5,14 +5,16 @@ var through2 = require('through2');
 var jasmine = require('./');
 var out = process.stdout.write.bind(process.stdout);
 
-var numberOneMatcher = function () {
-	return {
-		compare: function (value) {
-			var isOne = value === 1;
-			return {
-				pass: isOne,
-				message: isOne ? "Expected " + value + " not to be 1" : "Expected " + value + " to be 1"
-			};
+var numberMatcher = function (number) {
+	return function () {
+		return {
+			compare: function (value) {
+				var isNumber = value === number;
+				return {
+					pass: isNumber,
+					message: isNumber ? "Expected " + value + " not to be " + number : "Expected " + value + " to be " + number
+				};
+			}
 		}
 	}
 };
@@ -22,9 +24,10 @@ describe('gulp-jasmine', function () {
 		this.stream = jasmine({
 			timeout: 9000,
 			verbose: true,
-			matchers: {
-				toBeTheNumberOne: numberOneMatcher
-			}
+			matchers: [
+				{ toBeTheNumberOne: numberMatcher(1) },
+				{ toBeTheNumberTwo: numberMatcher(2) }
+			]
 		});
 
 		this.writeFileOnStream = function () {

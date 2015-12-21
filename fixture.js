@@ -31,7 +31,8 @@ xdescribe('the timeout', function () {
 });
 
 describe('custom matchers', function () {
-	it('should be able to run the custom matcher', function () {
+	it('should be able to assert with custom matchers', function () {
 		expect(1).toBeTheNumberOne();
+		expect(3).not.toBeTheNumberTwo();
 	});
 });

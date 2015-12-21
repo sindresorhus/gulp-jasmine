@@ -69,19 +69,19 @@ gulp.task('default', () => {
 
 ##### matchers
 
-Type: `object`
+Type: `object`, `array` of `objects`
 
 Matchers to use.
 
 ```js
 const gulp = require('gulp');
 const jasmine = require('gulp-jasmine');
-const jasmineMatchers = require('jasmine-expect');
+const myJasmineMatchers = require('./my-jasmine-matchers');
 
 gulp.task('default', () => {
   return gulp.src('spec/test.js')
     .pipe(jasmine({
-      matchers: jasmineMatchers
+      matchers: myJasmineMatchers
     }));
 });
 ```

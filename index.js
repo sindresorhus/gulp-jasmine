@@ -45,7 +45,9 @@ function addMatchers(jasmine, options) {
 
 	if (matchers) {
 		beforeEach(function () {
-			jasmine.addMatchers(matchers);
+			arrify(matchers).forEach(function (el) {
+				jasmine.addMatchers(el);
+			});
 		});
 	}
 }
