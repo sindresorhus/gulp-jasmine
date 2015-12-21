@@ -21,7 +21,7 @@ describe('beforeAll', function () {
 });
 
 xdescribe('the timeout', function () {
-	it('should pass', function (done) {
+	it('should only pass after a delay', function (done) {
 		expect(1).toBe(1);
 
 		setTimeout(function () {
