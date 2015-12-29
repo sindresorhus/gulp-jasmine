@@ -21,11 +21,18 @@ describe('beforeAll', function () {
 });
 
 xdescribe('the timeout', function () {
-	it('should pass', function (done) {
+	it('should only pass after a delay', function (done) {
 		expect(1).toBe(1);
 
 		setTimeout(function () {
 			done();
 		}, 6000);
+	});
+});
+
+describe('custom matchers', function () {
+	it('should be able to assert with custom matchers', function () {
+		expect(1).toBeTheNumberOne();
+		expect(3).not.toBeTheNumberTwo();
 	});
 });
