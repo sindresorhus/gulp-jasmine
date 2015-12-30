@@ -15,29 +15,29 @@ function deleteRequireCache(id) {
 	var files = require.cache[id];
 
 	if (files !== undefined) {
-		for (var file in files.children) {
+		Object.keys(files.children).forEach(function (file) {
 			deleteRequireCache(files.children[file].id);
-		}
+		});
 
 		delete require.cache[id];
 	}
 }
 
-module.exports = function (options) {
-	options = options || {};
+module.exports = function (opts) {
+	opts = opts || {};
 
 	var jasmine = new Jasmine();
 
-	if (options.timeout) {
-		jasmine.jasmine.DEFAULT_TIMEOUT_INTERVAL = options.timeout;
+	if (opts.timeout) {
+		jasmine.jasmine.DEFAULT_TIMEOUT_INTERVAL = opts.timeout;
 	}
 
-	if (options.config) {
-		jasmine.loadConfig(options.config)
+	if (opts.config) {
+		jasmine.loadConfig(opts.config);
 	}
 
 	var color = process.argv.indexOf('--no-color') === -1;
-	var reporter = options.reporter;
+	var reporter = opts.reporter;
 
 	if (reporter) {
 		arrify(reporter).forEach(function (el) {
@@ -45,9 +45,9 @@ module.exports = function (options) {
 		});
 	} else {
 		jasmine.addReporter(new Reporter({
-			isVerbose: options.verbose,
+			isVerbose: opts.verbose,
 			showColors: color,
-			includeStackTrace: options.includeStackTrace
+			includeStackTrace: opts.includeStackTrace
 		}));
 	}
 
