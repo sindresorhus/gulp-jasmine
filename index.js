@@ -15,9 +15,9 @@ function deleteRequireCache(id) {
 	var files = require.cache[id];
 
 	if (files !== undefined) {
-		for (var file in files.children) {
+		Object.keys(files.children).forEach(function (file) {
 			deleteRequireCache(files.children[file].id);
-		}
+		});
 
 		delete require.cache[id];
 	}
@@ -33,7 +33,7 @@ module.exports = function (options) {
 	}
 
 	if (options.config) {
-		jasmine.loadConfig(options.config)
+		jasmine.loadConfig(options.config);
 	}
 
 	var color = process.argv.indexOf('--no-color') === -1;
