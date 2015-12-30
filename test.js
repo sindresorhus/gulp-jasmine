@@ -1,53 +1,58 @@
-'use strict';
-var assert = require('assert');
-var gutil = require('gulp-util');
-var through2 = require('through2');
-var jasmine = require('./');
-var out = process.stdout.write.bind(process.stdout);
+import test from 'ava';
+import gutil from 'gulp-util';
+import through2 from 'through2';
+import fn from './';
 
-it('should run unit test and pass', function (cb) {
-	var stream = jasmine({
-		timeout: 9000,
-		verbose: true
+const out = process.stdout.write.bind(process.stdout);
+
+function jasmine(options) {
+	return new Promise((resolve, reject) => {
+		const stream = fn(options);
+
+		let output = '';
+
+		process.stdout.write = str => {
+			out(str);
+
+			output += str;
+		};
+
+		stream.on('data', () => { });
+
+		stream.on('error', reject);
+
+		stream.on('end', () => {
+			resolve(output);
+		});
+
+		stream.write(new gutil.File({
+			path: 'fixture.js',
+			contents: new Buffer('')
+		}));
+
+		stream.end();
 	});
+}
 
-	process.stdout.write = function (str) {
-		out(str);
+test('run unit test and pass', async t => {
+	const stdout = await jasmine({timeout: 9000, verbose: true});
 
-		if (/should pass/.test(str)) {
-			assert(true);
-			process.stdout.write = out;
-			cb();
-		}
-	};
-
-	stream.write(new gutil.File({
-		path: 'fixture.js',
-		contents: new Buffer('')
-	}));
-
-	stream.end();
+	t.true(/should pass: passed/.test(stdout));
 });
 
-it('should run the test only once even if called in succession', function (done) {
-	var stream = jasmine({
-		timeout: 9000,
-		verbose: true
-	});
-	var output = '';
-	var reader = through2.obj(function (file, enc, cb) {
+test.cb('run the test only once even if called in succession', t => {
+	const stream = fn({timeout: 9000, verbose: true});
+	let output = '';
+	const reader = through2.obj((file, enc, cb) => {
 		cb();
-	}, function (cb) {
+	}, cb => {
 		process.stdout.write = out;
-		assert.equal(output.match(/should pass/g).length, 1);
-		done();
+		t.is(output.match(/should pass: passed/g).length, 1);
+		t.end();
 		cb();
 	});
 
-	process.stdout.write = function (str) {
-		output += str;
-	};
-
+	process.stdout.write = str => output += str;
 	stream.pipe(reader);
 
 	stream.write(new gutil.File({
