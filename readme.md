@@ -34,14 +34,14 @@ gulp.task('default', () => {
 
 ##### verbose
 
-Type: `boolean`  
+Type: `boolean`
 Default: `false`
 
 Display spec names in default reporter.
 
 ##### includeStackTrace
 
-Type: `boolean`  
+Type: `boolean`
 Default: `false`
 
 Include stack traces in failures in default reporter.
@@ -69,10 +69,17 @@ gulp.task('default', () => {
 
 ##### timeout
 
-Type: `number`  
+Type: `number`
 Default `5000`
 
 Time to wait in milliseconds before a test automatically fails.
+
+##### errorOnFail
+
+Type: `boolean`
+Default: `true`
+
+Stops the stream on failed tests.
 
 ##### config
 
