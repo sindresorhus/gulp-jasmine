@@ -18,11 +18,11 @@ $ npm install --save-dev gulp-jasmine
 const gulp = require('gulp');
 const jasmine = require('gulp-jasmine');
 
-gulp.task('default', () => {
-	return gulp.src('spec/test.js')
+gulp.task('default', () =>
+	gulp.src('spec/test.js')
 		// gulp-jasmine works on filepaths so you can't have any plugins before it
-		.pipe(jasmine());
-});
+		.pipe(jasmine())
+);
 ```
 
 
@@ -34,14 +34,14 @@ gulp.task('default', () => {
 
 ##### verbose
 
-Type: `boolean`
+Type: `boolean`<br>
 Default: `false`
 
 Display spec names in default reporter.
 
 ##### includeStackTrace
 
-Type: `boolean`
+Type: `boolean`<br>
 Default: `false`
 
 Include stack traces in failures in default reporter.
@@ -57,26 +57,26 @@ const gulp = require('gulp');
 const jasmine = require('gulp-jasmine');
 const reporters = require('jasmine-reporters');
 
-gulp.task('default', () => {
-	return gulp.src('spec/test.js')
+gulp.task('default', () =>
+	gulp.src('spec/test.js')
 		.pipe(jasmine({
 			reporter: new reporters.JUnitXmlReporter()
-		}));
-});
+		}))
+);
 ```
 
 [Creating your own reporter.](http://jasmine.github.io/2.1/custom_reporter.html)
 
 ##### timeout
 
-Type: `number`
+Type: `number`<br>
 Default `5000`
 
 Time to wait in milliseconds before a test automatically fails.
 
 ##### errorOnFail
 
-Type: `boolean`
+Type: `boolean`<br>
 Default: `true`
 
 Stops the stream on failed tests.
