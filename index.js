@@ -36,6 +36,7 @@ module.exports = function (opts) {
 		jasmine.loadConfig(opts.config);
 	}
 
+	var errorOnFail = opts.errorOnFail === undefined ? true : opts.errorOnFail;
 	var color = process.argv.indexOf('--no-color') === -1;
 	var reporter = opts.reporter;
 
@@ -80,7 +81,7 @@ module.exports = function (opts) {
 					deleteRequireCache(modId);
 				});
 			}
-			jasmine.addReporter(new SilentReporter(cb));
+			jasmine.addReporter(new SilentReporter(cb, errorOnFail));
 			jasmine.execute();
 		} catch (err) {
 			cb(new gutil.PluginError('gulp-jasmine', err, {showStack: true}));

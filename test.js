@@ -5,7 +5,7 @@ import fn from './';
 
 const out = process.stdout.write.bind(process.stdout);
 
-function jasmine(options) {
+function jasmine(file, options) {
 	return new Promise((resolve, reject) => {
 		const stream = fn(options);
 
@@ -25,7 +25,7 @@ function jasmine(options) {
 		});
 
 		stream.write(new gutil.File({
-			path: 'fixture.js',
+			path: file,
 			contents: new Buffer('')
 		}));
 
@@ -34,9 +34,26 @@ function jasmine(options) {
 }
 
 test('run unit test and pass', async t => {
-	const stdout = await jasmine({timeout: 9000, verbose: true});
+	const stdout = await jasmine('fixture.js', {timeout: 9000, verbose: true});
 
 	t.true(/should pass: passed/.test(stdout));
+});
+
+test('run unit test and fail silently', async t => {
+	const stdout = await jasmine('fail-fixture.js', {timeout: 9000, verbose: true, errorOnFail: false});
+
+	t.true(/should fail: failed/.test(stdout));
+});
+
+test('run unit test and fail', async t => {
+	let errorThrown = 0;
+	try {
+		await jasmine('fail-fixture.js', {timeout: 9000, verbose: true});
+	} catch (err) {
+		errorThrown++;
+	}
+
+	t.is(errorThrown, 1);
 });
 
 test.cb('run the test only once even if called in succession', t => {
