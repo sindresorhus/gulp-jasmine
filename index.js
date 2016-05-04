@@ -73,6 +73,8 @@ module.exports = function (opts) {
 
 		cb(null, file);
 	}, function (cb) {
+		var self = this;
+
 		try {
 			if (jasmine.helperFiles) {
 				jasmine.helperFiles.forEach(function (helper) {
@@ -81,7 +83,14 @@ module.exports = function (opts) {
 					deleteRequireCache(modId);
 				});
 			}
-			jasmine.addReporter(new SilentReporter(cb, errorOnFail));
+			jasmine.addReporter(new SilentReporter(function (error) {
+				if (error) {
+					cb(error);
+				} else {
+					self.emit('jasmineDone');
+					cb();
+				}
+			}, errorOnFail));
 			jasmine.execute();
 		} catch (err) {
 			cb(new gutil.PluginError('gulp-jasmine', err, {showStack: true}));
