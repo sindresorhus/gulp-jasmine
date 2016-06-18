@@ -16,11 +16,9 @@ function jasmine(file, options) {
 			output += str;
 		};
 
-		stream.on('data', () => {});
-
 		stream.on('error', reject);
 
-		stream.on('end', () => {
+		stream.on('jasmineDone', () => {
 			resolve(output);
 		});
 
@@ -64,11 +62,13 @@ test.cb('run the test only once even if called in succession', t => {
 	}, cb => {
 		process.stdout.write = out;
 		t.is(output.match(/should pass: passed/g).length, 1);
-		t.end();
 		cb();
+		t.end();
 	});
 
-	process.stdout.write = str => output += str;
+	process.stdout.write = str => {
+		output += str;
+	};
 	stream.pipe(reader);
 
 	stream.write(new gutil.File({

@@ -1,6 +1,6 @@
 # gulp-jasmine [![Build Status](https://travis-ci.org/sindresorhus/gulp-jasmine.svg?branch=master)](https://travis-ci.org/sindresorhus/gulp-jasmine)
 
-> Run [Jasmine 2](http://jasmine.github.io/2.1/introduction.html) tests in Node.js
+> Run [Jasmine 2](http://jasmine.github.io/2.4/introduction.html) tests in Node.js
 
 *Issues with the output should be reported on the Jasmine [issue tracker](https://github.com/jasmine/jasmine/issues).*
 
@@ -65,7 +65,7 @@ gulp.task('default', () =>
 );
 ```
 
-[Creating your own reporter.](http://jasmine.github.io/2.1/custom_reporter.html)
+[Creating your own reporter.](http://jasmine.github.io/2.4/custom_reporter.html)
 
 ##### timeout
 
@@ -85,8 +85,13 @@ Stops the stream on failed tests.
 
 Type: `object`
 
-Passes the config to Jasmine's [loadConfig](http://jasmine.github.io/2.3/node.html#section-Load_configuration_from_a_file_or_from_an_object.) method.
+Passes the config to Jasmine's [loadConfig](http://jasmine.github.io/2.4/node.html#section-Load_configuration_from_a_file_or_from_an_object.) method.
 
+#### events
+
+##### jasmineDone
+
+Emitted after all tests have been completed. For a discussion about why `jasmineDone` and not `end` nor `finish`, see [pull request #71](https://github.com/sindresorhus/gulp-jasmine/pull/71).
 
 ## FAQ
 
