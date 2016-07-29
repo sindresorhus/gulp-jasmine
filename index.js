@@ -84,6 +84,7 @@ module.exports = function (opts) {
 				});
 			}
 			jasmine.addReporter(new SilentReporter(function (error) {
+				self.resume();
 				if (error) {
 					cb(error);
 				} else {
@@ -91,6 +92,7 @@ module.exports = function (opts) {
 					cb();
 				}
 			}, errorOnFail));
+			this.pause();
 			jasmine.execute();
 		} catch (err) {
 			cb(new gutil.PluginError('gulp-jasmine', err, {showStack: true}));
