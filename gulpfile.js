@@ -6,7 +6,7 @@ var flag = require('./flag');
 
 gulp.task('default', function () {
 	return gulp.src('fixture.js')
-		.pipe(jasmine({	timeout: 10000 }))
+		.pipe(jasmine({	timeout: 1500 }))
 		.on('end', checkTestsDone)
 	;
 });
