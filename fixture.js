@@ -29,7 +29,7 @@ describe('beforeAll', function () {
 	});
 });
 
-describe('the timeout', function () {
+xdescribe('the timeout', function () {
 	it('should pass', function (done) {
 		expect(1).toBe(1);
 
