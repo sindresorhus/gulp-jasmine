@@ -35,7 +35,7 @@ describe('the timeout', function () {
 
 		setTimeout(function () {
 			done();
-		}, 6000);
+		}, 1000);
 	});
 });
 
