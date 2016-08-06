@@ -43,6 +43,7 @@
   "devDependencies": {
     "ava": "*",
     "gulp": "^3.8.7",
+    "merge-stream": "^1.0.0",
     "xo": "*"
   },
   "xo": {
