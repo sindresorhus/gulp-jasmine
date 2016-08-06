@@ -25,31 +25,11 @@ function deleteRequireCache(id) {
 module.exports = function (opts) {
 	opts = opts || {};
 
-	var jasmine = new Jasmine();
-
-	if (opts.timeout) {
-		jasmine.jasmine.DEFAULT_TIMEOUT_INTERVAL = opts.timeout;
-	}
-
-	if (opts.config) {
-		jasmine.loadConfig(opts.config);
-	}
-
 	var errorOnFail = opts.errorOnFail === undefined ? true : opts.errorOnFail;
 	var color = process.argv.indexOf('--no-color') === -1;
 	var reporter = opts.reporter;
 
-	if (reporter) {
-		arrify(reporter).forEach(function (el) {
-			jasmine.addReporter(el);
-		});
-	} else {
-		jasmine.addReporter(new Reporter({
-			isVerbose: opts.verbose,
-			showColors: color,
-			includeStackTrace: opts.includeStackTrace
-		}));
-	}
+	var resolvedPaths = [];
 
 	return through.obj(function (file, enc, cb) {
 		if (file.isNull()) {
@@ -68,13 +48,34 @@ module.exports = function (opts) {
 		var modId = require.resolve(resolvedPath);
 		deleteRequireCache(modId);
 
-		jasmine.addSpecFile(resolvedPath);
+		resolvedPaths.push(resolvedPath);
 
 		cb(null, file);
 	}, function (cb) {
 		var self = this;
 
 		try {
+			var jasmine = new Jasmine();
+
+			if (opts.timeout) {
+				jasmine.jasmine.DEFAULT_TIMEOUT_INTERVAL = opts.timeout;
+			}
+			if (opts.config) {
+				jasmine.loadConfig(opts.config);
+			}
+
+			if (reporter) {
+				arrify(reporter).forEach(function (el) {
+					jasmine.addReporter(el);
+				});
+			} else {
+				jasmine.addReporter(new Reporter({
+					isVerbose: opts.verbose,
+					showColors: color,
+					includeStackTrace: opts.includeStackTrace
+				}));
+			}
+
 			if (jasmine.helperFiles) {
 				jasmine.helperFiles.forEach(function (helper) {
 					var resolvedPath = path.resolve(helper);
@@ -94,6 +95,7 @@ module.exports = function (opts) {
 				}
 			});
 
+			resolvedPaths.forEach(jasmine.addSpecFile.bind(jasmine));
 			jasmine.execute();
 		} catch (err) {
 			cb(new gutil.PluginError('gulp-jasmine', err, {showStack: true}));
