@@ -1,4 +1,13 @@
-describe('fixture', function () {
+
+var flag = require('./flag');
+
+describe('gulp-jasmine', function() {
+
+afterAll(function() {
+	flag.testsDone = true;
+});
+
+describe('fixture', function() {
 	it('should pass', function () {
 		expect(1 + 2).toEqual(3);
 	});
@@ -20,7 +29,7 @@ describe('beforeAll', function () {
 	});
 });
 
-xdescribe('the timeout', function () {
+describe('the timeout', function () {
 	it('should pass', function (done) {
 		expect(1).toBe(1);
 
@@ -29,3 +38,6 @@ xdescribe('the timeout', function () {
 		}, 6000);
 	});
 });
+
+});
+
