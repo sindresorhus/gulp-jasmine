@@ -1,15 +1,16 @@
 'use strict';
 
 var gulp = require('gulp');
-var jasmine = require('./');
 var merge = require('merge-stream');
 var flag = require('./flag');
+
+var jasmine = require('./');
 
 gulp.task('default', function () {
 	flag.testsDone = false;
 
 	var first = gulp.src('fixture.js')
-		.pipe(jasmine({	timeout: 1500 }))
+		.pipe(jasmine({timeout: 1500}))
 		.on('end', checkTestsDone)
 	;
 	var second = gulp.src('nonexistent.js')
