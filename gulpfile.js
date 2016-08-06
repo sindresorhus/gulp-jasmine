@@ -2,18 +2,25 @@
 
 var gulp = require('gulp');
 var jasmine = require('./');
+var merge = require('merge-stream');
 var flag = require('./flag');
 
 gulp.task('default', function () {
-	return gulp.src('fixture.js')
+	flag.testsDone = false;
+
+	var first = gulp.src('fixture.js')
 		.pipe(jasmine({	timeout: 1500 }))
 		.on('end', checkTestsDone)
 	;
+	var second = gulp.src('nonexistent.js')
+		.pipe(jasmine())
+	;
+	return merge(first, second);
 });
 
 function checkTestsDone() {
 	if (!flag.testsDone) {
-		throw new Error('jasmine should not be running after \'end\' event');
+		throw new Error('unfinished tests after \'end\' event');
 	}
 }
 
