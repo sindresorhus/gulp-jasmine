@@ -85,7 +85,7 @@ Stops the stream on failed tests.
 
 Type: `object` | `string`
 
-Passes the config to Jasmine's [loadConfig](http://jasmine.github.io/2.4/node.html#section-Load_configuration_from_a_file_or_from_an_object.) or [loadConfigFile](http://jasmine.github.io/2.4/node.html#section-Load_configuration_from_a_file_or_from_an_object.) method.
+Passes the config to Jasmine's [loadConfig](http://jasmine.github.io/2.4/node.html#section-Load_configuration_from_a_file_or_from_an_object.) or the filename to [loadConfigFile](http://jasmine.github.io/2.4/node.html#section-Load_configuration_from_a_file_or_from_an_object.) method.
 
 #### events
 
