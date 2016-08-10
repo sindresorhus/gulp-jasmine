@@ -10,11 +10,11 @@ gulp.task('default', function () {
 	flag.testsDone = false;
 
 	var first = gulp.src('fixture.js')
-		.pipe(jasmine({timeout: 1500}))
+		.pipe(jasmine({timeout: 1500, verbose: true}))
 		.on('end', checkTestsDone)
 	;
-	var second = gulp.src('nonexistent.js')
-		.pipe(jasmine())
+	var second = gulp.src('fail-fixture.js')
+		.pipe(jasmine({verbose:true}))
 	;
 	return merge(first, second);
 });
