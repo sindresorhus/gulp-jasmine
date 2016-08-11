@@ -32,16 +32,16 @@ module.exports = function (opts) {
 
 	var resolvedPaths = [];
 	var specVinyls = [];
-	var readCount = 0;
+	var readCalled = false;
 
 	var self = new stream.Duplex({objectMode: true, allowHalfOpen: true});
-	self._read = countReads;
+	self._read = flagRead;
 	self._write = memorizeVinyl;
 	self.on('finish', onAllSpecsInStream);
 	return self;
 
-	function countReads() {
-		readCount += 1;
+	function flagRead() {
+		readCalled = true;
 	}
 
 	function memorizeVinyl(file, enc, cb) {
@@ -115,17 +115,19 @@ module.exports = function (opts) {
 			self.emit('error', new gutil.PluginError('gulp-jasmine', error, {showStack: true}));
 			return;
 		}
+		self._read = read;
 
-		specVinyls.splice(0, readCount).forEach(self.push.bind(self));
-		if (specVinyls.length === 0) {
-			sendEOF();
-		} else {
-			self._read = read;
-		}
 		self.emit('jasmineDone');
+
+		if (readCalled) {
+			read();
+		}
 	}
 
 	function read() {
+		if (specVinyls.length === 0) {
+			return;
+		}
 		self.push(specVinyls.shift());
 
 		if (specVinyls.length === 0) {
