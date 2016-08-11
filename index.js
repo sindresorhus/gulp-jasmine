@@ -75,7 +75,6 @@ module.exports = function (opts) {
 			jasmine.execute();
 		} catch (err) {
 			self.emit('error', new gutil.PluginError('gulp-jasmine', err, {showStack: true}));
-			self.push(null);
 		}
 	}
 
