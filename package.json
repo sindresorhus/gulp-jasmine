@@ -37,14 +37,14 @@
     "arrify": "^1.0.0",
     "gulp-util": "^3.0.0",
     "jasmine": "^2.1.0",
-    "jasmine-terminal-reporter": "^1.0.0",
-    "through2": "^2.0.0"
+    "jasmine-terminal-reporter": "^1.0.0"
   },
   "devDependencies": {
     "ava": "*",
     "gulp": "^3.8.7",
     "merge-stream": "^1.0.0",
-    "xo": "*"
+    "xo": "*",
+    "through2": "^2.0.0"
   },
   "xo": {
     "envs": [
