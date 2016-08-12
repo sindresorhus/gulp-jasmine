@@ -22,7 +22,6 @@ function jasmine(file, options) {
 			resolve(output);
 		});
 
-
 		stream.write(new gutil.File({
 			path: file,
 			contents: new Buffer('')
