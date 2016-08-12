@@ -18,9 +18,10 @@ function jasmine(file, options) {
 
 		stream.on('error', reject);
 
-		stream.on('jasmineDone', () => {
+		stream.on('end', () => {
 			resolve(output);
 		});
+
 
 		stream.write(new gutil.File({
 			path: file,
@@ -28,6 +29,9 @@ function jasmine(file, options) {
 		}));
 
 		stream.end();
+
+		stream.resume();
+		stream.read();
 	});
 }
 
