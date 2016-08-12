@@ -18,7 +18,7 @@ function jasmine(file, options) {
 
 		stream.on('error', reject);
 
-		stream.on('jasmineDone', () => {
+		stream.on('end', () => {
 			resolve(output);
 		});
 
@@ -28,6 +28,9 @@ function jasmine(file, options) {
 		}));
 
 		stream.end();
+
+		stream.resume();
+		stream.read();
 	});
 }
 

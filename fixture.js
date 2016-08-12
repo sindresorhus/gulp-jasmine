@@ -1,4 +1,13 @@
-describe('fixture', function () {
+
+var flag = require('./flag');
+
+describe('gulp-jasmine', function() {
+
+afterAll(function() {
+	flag.testsDone = true;
+});
+
+describe('fixture', function() {
 	it('should pass', function () {
 		expect(1 + 2).toEqual(3);
 	});
@@ -26,6 +35,9 @@ xdescribe('the timeout', function () {
 
 		setTimeout(function () {
 			done();
-		}, 6000);
+		}, 1000);
 	});
 });
+
+});
+

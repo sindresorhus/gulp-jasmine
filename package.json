@@ -13,7 +13,7 @@
     "node": ">=0.10.0"
   },
   "scripts": {
-    "test": "xo && ava"
+    "test": "xo && ava -s"
   },
   "files": [
     "index.js",
@@ -37,13 +37,14 @@
     "arrify": "^1.0.0",
     "gulp-util": "^3.0.0",
     "jasmine": "^2.1.0",
-    "jasmine-terminal-reporter": "^1.0.0",
-    "through2": "^2.0.0"
+    "jasmine-terminal-reporter": "^1.0.0"
   },
   "devDependencies": {
     "ava": "*",
     "gulp": "^3.8.7",
-    "xo": "*"
+    "merge-stream": "^1.0.0",
+    "xo": "*",
+    "through2": "^2.0.0"
   },
   "xo": {
     "envs": [
