@@ -16,8 +16,7 @@
     "test": "xo && ava"
   },
   "files": [
-    "index.js",
-    "silent-reporter.js"
+    "index.js"
   ],
   "keywords": [
     "bdd",
@@ -36,7 +35,7 @@
   "dependencies": {
     "arrify": "^1.0.0",
     "gulp-util": "^3.0.0",
-    "jasmine": "^2.1.0",
+    "jasmine": "^2.3.0",
     "jasmine-terminal-reporter": "^1.0.0",
     "through2": "^2.0.0"
   },

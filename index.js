@@ -5,7 +5,6 @@ var gutil = require('gulp-util');
 var through = require('through2');
 var Jasmine = require('jasmine');
 var Reporter = require('jasmine-terminal-reporter');
-var SilentReporter = require('./silent-reporter');
 
 function deleteRequireCache(id) {
 	if (!id || id.indexOf('node_modules') !== -1) {
@@ -83,14 +82,18 @@ module.exports = function (opts) {
 					deleteRequireCache(modId);
 				});
 			}
-			jasmine.addReporter(new SilentReporter(function (error) {
-				if (error) {
-					cb(error);
+
+			jasmine.onComplete(function (passed) {
+				if (errorOnFail && !passed) {
+					cb(new gutil.PluginError('gulp-jasmine', 'Tests failed', {
+						showStack: false
+					}));
 				} else {
-					self.emit('jasmineDone');
+					self.emit('jasmineDone', passed);
 					cb();
 				}
-			}, errorOnFail));
+			});
+
 			jasmine.execute();
 		} catch (err) {
 			cb(new gutil.PluginError('gulp-jasmine', err, {showStack: true}));
