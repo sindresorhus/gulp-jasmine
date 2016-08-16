@@ -18,8 +18,8 @@ function jasmine(file, options) {
 
 		stream.on('error', reject);
 
-		stream.on('jasmineDone', () => {
-			resolve(output);
+		stream.on('jasmineDone', passed => {
+			resolve({output, passed});
 		});
 
 		stream.write(new gutil.File({
@@ -32,15 +32,17 @@ function jasmine(file, options) {
 }
 
 test('run unit test and pass', async t => {
-	const stdout = await jasmine('fixture.js', {timeout: 9000, verbose: true});
+	const {output, passed} = await jasmine('fixture.js', {timeout: 9000, verbose: true});
 
-	t.true(/should pass: passed/.test(stdout));
+	t.true(/should pass: passed/.test(output));
+	t.true(passed);
 });
 
 test('run unit test and fail silently', async t => {
-	const stdout = await jasmine('fail-fixture.js', {timeout: 9000, verbose: true, errorOnFail: false});
+	const {output, passed} = await jasmine('fail-fixture.js', {timeout: 9000, verbose: true, errorOnFail: false});
 
-	t.true(/should fail: failed/.test(stdout));
+	t.true(/should fail: failed/.test(output));
+	t.false(passed);
 });
 
 test('run unit test and fail', async t => {
