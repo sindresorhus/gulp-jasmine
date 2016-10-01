@@ -39,6 +39,11 @@ module.exports = function (opts) {
 	var color = process.argv.indexOf('--no-color') === -1;
 	var reporter = opts.reporter;
 
+	// default reporter behavior changed in 2.5.2
+	if (jasmine.env.clearReporters) {
+		jasmine.env.clearReporters();
+	}
+
 	if (reporter) {
 		arrify(reporter).forEach(function (el) {
 			jasmine.addReporter(el);
