@@ -80,6 +80,10 @@ module.exports = function (opts) {
 		var self = this;
 
 		try {
+			var self = this;
+			jasmine.onComplete(function() {
+				self.emit('end');
+			});
 			if (jasmine.helperFiles) {
 				jasmine.helperFiles.forEach(function (helper) {
 					var resolvedPath = path.resolve(helper);
