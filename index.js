@@ -32,7 +32,11 @@ module.exports = function (opts) {
 	}
 
 	if (opts.config) {
-		jasmine.loadConfig(opts.config);
+		if (typeof opts.config === 'string') {
+			jasmine.loadConfigFile(opts.config);
+		} else {
+			jasmine.loadConfig(opts.config);
+		}
 	}
 
 	var errorOnFail = opts.errorOnFail === undefined ? true : opts.errorOnFail;
