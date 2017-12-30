@@ -1,7 +1,7 @@
 'use strict';
 var path = require('path');
 var arrify = require('arrify');
-var gutil = require('gulp-util');
+var PluginError = require('plugin-error');
 var through = require('through2');
 var Jasmine = require('jasmine');
 var Reporter = require('jasmine-terminal-reporter');
@@ -63,7 +63,7 @@ module.exports = function (opts) {
 		}
 
 		if (file.isStream()) {
-			cb(new gutil.PluginError('gulp-jasmine', 'Streaming not supported'));
+			cb(new PluginError('gulp-jasmine', 'Streaming not supported'));
 			return;
 		}
 
@@ -90,7 +90,7 @@ module.exports = function (opts) {
 
 			jasmine.onComplete(function (passed) {
 				if (errorOnFail && !passed) {
-					cb(new gutil.PluginError('gulp-jasmine', 'Tests failed', {
+					cb(new PluginError('gulp-jasmine', 'Tests failed', {
 						showStack: false
 					}));
 				} else {
@@ -101,7 +101,7 @@ module.exports = function (opts) {
 
 			jasmine.execute();
 		} catch (err) {
-			cb(new gutil.PluginError('gulp-jasmine', err, {showStack: true}));
+			cb(new PluginError('gulp-jasmine', err, {showStack: true}));
 		}
 	});
 };

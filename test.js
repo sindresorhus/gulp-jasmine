@@ -1,5 +1,5 @@
 import test from 'ava';
-import gutil from 'gulp-util';
+import Vinyl from 'vinyl';
 import through2 from 'through2';
 import fn from './';
 
@@ -22,7 +22,7 @@ function jasmine(file, options) {
 			resolve({output, passed});
 		});
 
-		stream.write(new gutil.File({
+		stream.write(new Vinyl({
 			path: file,
 			contents: new Buffer('')
 		}));
@@ -73,7 +73,7 @@ test.cb('run the test only once even if called in succession', t => {
 	};
 	stream.pipe(reader);
 
-	stream.write(new gutil.File({
+	stream.write(new Vinyl({
 		path: 'fixture.js',
 		contents: new Buffer('')
 	}));
