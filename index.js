@@ -1,62 +1,62 @@
 'use strict';
-var path = require('path');
-var arrify = require('arrify');
-var PluginError = require('plugin-error');
-var through = require('through2');
-var Jasmine = require('jasmine');
-var Reporter = require('jasmine-terminal-reporter');
+const path = require('path');
+const arrify = require('arrify');
+const PluginError = require('plugin-error');
+const through = require('through2');
+const Jasmine = require('jasmine');
+const Reporter = require('jasmine-terminal-reporter');
 
 function deleteRequireCache(id) {
-	if (!id || id.indexOf('node_modules') !== -1) {
+	if (!id || id.includes('node_modules')) {
 		return;
 	}
 
-	var files = require.cache[id];
+	const files = require.cache[id];
 
 	if (files !== undefined) {
-		Object.keys(files.children).forEach(function (file) {
+		for (const file of Object.keys(files.children)) {
 			deleteRequireCache(files.children[file].id);
-		});
+		}
 
 		delete require.cache[id];
 	}
 }
 
-module.exports = function (opts) {
-	opts = opts || {};
+module.exports = options => {
+	options = options || {};
 
-	var jasmine = new Jasmine();
+	const jasmine = new Jasmine();
 
-	if (opts.timeout) {
-		jasmine.jasmine.DEFAULT_TIMEOUT_INTERVAL = opts.timeout;
+	if (options.timeout) {
+		jasmine.jasmine.DEFAULT_TIMEOUT_INTERVAL = options.timeout;
 	}
 
-	if (opts.config) {
-		jasmine.loadConfig(opts.config);
+	if (options.config) {
+		jasmine.loadConfig(options.config);
 	}
 
-	var errorOnFail = opts.errorOnFail === undefined ? true : opts.errorOnFail;
-	var color = process.argv.indexOf('--no-color') === -1;
-	var reporter = opts.reporter;
+	const errorOnFail = options.errorOnFail === undefined ? true : options.errorOnFail;
+	const color = process.argv.indexOf('--no-color') === -1;
+	const reporter = options.reporter;
 
-	// default reporter behavior changed in 2.5.2
+	// Default reporter behavior changed in 2.5.2
 	if (jasmine.env.clearReporters) {
 		jasmine.env.clearReporters();
 	}
 
 	if (reporter) {
-		arrify(reporter).forEach(function (el) {
+		for (const el of arrify(reporter)) {
 			jasmine.addReporter(el);
-		});
+		}
 	} else {
 		jasmine.addReporter(new Reporter({
-			isVerbose: opts.verbose,
+			isVerbose: options.verbose,
 			showColors: color,
-			includeStackTrace: opts.includeStackTrace
+			includeStackTrace: options.includeStackTrace
 		}));
 	}
 
-	return through.obj(function (file, enc, cb) {
+	return through.obj((file, enc, cb) => {
 		if (file.isNull()) {
 			cb(null, file);
 			return;
@@ -67,28 +67,28 @@ module.exports = function (opts) {
 			return;
 		}
 
-		// get the cache object of the specs.js file,
+		// Get the cache object of the specs.js file,
 		// delete it and its children recursively from cache
-		var resolvedPath = path.resolve(file.path);
-		var modId = require.resolve(resolvedPath);
+		const resolvedPath = path.resolve(file.path);
+		const modId = require.resolve(resolvedPath);
 		deleteRequireCache(modId);
 
 		jasmine.addSpecFile(resolvedPath);
 
 		cb(null, file);
 	}, function (cb) {
-		var self = this;
+		const self = this;
 
 		try {
 			if (jasmine.helperFiles) {
-				jasmine.helperFiles.forEach(function (helper) {
-					var resolvedPath = path.resolve(helper);
-					var modId = require.resolve(resolvedPath);
+				for (const helper of jasmine.helperFiles) {
+					const resolvedPath = path.resolve(helper);
+					const modId = require.resolve(resolvedPath);
 					deleteRequireCache(modId);
-				});
+				}
 			}
 
-			jasmine.onComplete(function (passed) {
+			jasmine.onComplete(passed => {
 				if (errorOnFail && !passed) {
 					cb(new PluginError('gulp-jasmine', 'Tests failed', {
 						showStack: false

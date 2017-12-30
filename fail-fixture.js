@@ -1,5 +1,7 @@
-describe('fail-fixture', function () {
-	it('should fail', function () {
+'use strict';
+
+describe('fail-fixture', () => {
+	it('should fail', () => {
 		expect(1 + 2).toEqual(4);
 	});
 });

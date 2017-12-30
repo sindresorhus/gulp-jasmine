@@ -1,13 +1,13 @@
 import test from 'ava';
 import Vinyl from 'vinyl';
 import through2 from 'through2';
-import fn from './';
+import m from '.';
 
 const out = process.stdout.write.bind(process.stdout);
 
 function jasmine(file, options) {
 	return new Promise((resolve, reject) => {
-		const stream = fn(options);
+		const stream = m(options);
 
 		let output = '';
 
@@ -24,7 +24,7 @@ function jasmine(file, options) {
 
 		stream.write(new Vinyl({
 			path: file,
-			contents: new Buffer('')
+			contents: Buffer.from('')
 		}));
 
 		stream.end();
@@ -32,14 +32,21 @@ function jasmine(file, options) {
 }
 
 test('run unit test and pass', async t => {
-	const {output, passed} = await jasmine('fixture.js', {timeout: 9000, verbose: true});
+	const {output, passed} = await jasmine('fixture.js', {
+		timeout: 9000,
+		verbose: true
+	});
 
 	t.true(/should pass: passed/.test(output));
 	t.true(passed);
 });
 
 test('run unit test and fail silently', async t => {
-	const {output, passed} = await jasmine('fail-fixture.js', {timeout: 9000, verbose: true, errorOnFail: false});
+	const {output, passed} = await jasmine('fail-fixture.js', {
+		timeout: 9000,
+		verbose: true,
+		errorOnFail: false
+	});
 
 	t.true(/should fail: failed/.test(output));
 	t.false(passed);
@@ -48,7 +55,10 @@ test('run unit test and fail silently', async t => {
 test('run unit test and fail', async t => {
 	let errorThrown = 0;
 	try {
-		await jasmine('fail-fixture.js', {timeout: 9000, verbose: true});
+		await jasmine('fail-fixture.js', {
+			timeout: 9000,
+			verbose: true
+		});
 	} catch (err) {
 		errorThrown++;
 	}
@@ -57,8 +67,13 @@ test('run unit test and fail', async t => {
 });
 
 test.cb('run the test only once even if called in succession', t => {
-	const stream = fn({timeout: 9000, verbose: true});
+	const stream = m({
+		timeout: 9000,
+		verbose: true
+	});
+
 	let output = '';
+
 	const reader = through2.obj((file, enc, cb) => {
 		cb();
 	}, cb => {
@@ -75,7 +90,7 @@ test.cb('run the test only once even if called in succession', t => {
 
 	stream.write(new Vinyl({
 		path: 'fixture.js',
-		contents: new Buffer('')
+		contents: Buffer.from('')
 	}));
 
 	stream.end();

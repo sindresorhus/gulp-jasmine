@@ -1,31 +1,30 @@
-describe('fixture', function () {
-	it('should pass', function () {
+'use strict';
+
+describe('fixture', () => {
+	it('should pass', () => {
 		expect(1 + 2).toEqual(3);
 	});
 });
 
-describe('beforeAll', function () {
-	var i = 0;
+describe('beforeAll', () => {
+	let i = 0;
 
-	beforeAll(function () {
+	beforeAll(() => {
 		i++;
 	});
 
-	it('should be called first', function () {
+	it('should be called first', () => {
 		expect(i).toBe(1);
 	});
 
-	it('should be called once', function () {
+	it('should be called once', () => {
 		expect(i).toBe(1);
 	});
 });
 
-xdescribe('the timeout', function () {
-	it('should pass', function (done) {
+xdescribe('the timeout', () => {
+	it('should pass', done => {
 		expect(1).toBe(1);
-
-		setTimeout(function () {
-			done();
-		}, 6000);
+		setTimeout(done, 6000);
 	});
 });

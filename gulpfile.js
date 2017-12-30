@@ -1,9 +1,10 @@
 'use strict';
-var gulp = require('gulp');
-var jasmine = require('./');
+const gulp = require('gulp');
+const jasmine = require('.');
 
-gulp.task('default', function () {
-	return gulp.src('fixture.js').pipe(jasmine({
-		timeout: 10000
-	}));
-});
+gulp.task('default', () =>
+	gulp.src('fixture.js')
+		.pipe(jasmine({
+			timeout: 10000
+		}))
+);

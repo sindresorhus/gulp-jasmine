@@ -1,53 +1,56 @@
 {
-  "name": "gulp-jasmine",
-  "version": "2.4.2",
-  "description": "Run Jasmine tests",
-  "license": "MIT",
-  "repository": "sindresorhus/gulp-jasmine",
-  "author": {
-    "email": "sindresorhus@gmail.com",
-    "name": "Sindre Sorhus",
-    "url": "sindresorhus.com"
-  },
-  "engines": {
-    "node": ">=0.10.0"
-  },
-  "scripts": {
-    "test": "xo && ava"
-  },
-  "files": [
-    "index.js"
-  ],
-  "keywords": [
-    "bdd",
-    "framework",
-    "gulpplugin",
-    "jasmine",
-    "qunit",
-    "runner",
-    "spec",
-    "tap",
-    "tdd",
-    "test",
-    "testing",
-    "unit"
-  ],
-  "dependencies": {
-    "arrify": "^1.0.0",
-    "jasmine": "^2.3.0",
-    "jasmine-terminal-reporter": "^1.0.0",
-    "plugin-error": "^0.1.2",
-    "through2": "^2.0.0"
-  },
-  "devDependencies": {
-    "ava": "*",
-    "gulp": "^3.8.7",
-    "vinyl": "^2.1.0",
-    "xo": "*"
-  },
-  "xo": {
-    "envs": [
-      "jasmine"
-    ]
-  }
+	"name": "gulp-jasmine",
+	"version": "2.4.2",
+	"description": "Run Jasmine tests",
+	"license": "MIT",
+	"repository": "sindresorhus/gulp-jasmine",
+	"author": {
+		"email": "sindresorhus@gmail.com",
+		"name": "Sindre Sorhus",
+		"url": "sindresorhus.com"
+	},
+	"engines": {
+		"node": ">=4"
+	},
+	"scripts": {
+		"test": "xo && ava"
+	},
+	"files": [
+		"index.js"
+	],
+	"keywords": [
+		"bdd",
+		"framework",
+		"gulpplugin",
+		"jasmine",
+		"qunit",
+		"runner",
+		"spec",
+		"tap",
+		"tdd",
+		"test",
+		"testing",
+		"unit"
+	],
+	"dependencies": {
+		"arrify": "^1.0.0",
+		"jasmine": "^2.8.0",
+		"jasmine-terminal-reporter": "^1.0.3",
+		"plugin-error": "^0.1.2",
+		"through2": "^2.0.0"
+	},
+	"devDependencies": {
+		"ava": "*",
+		"gulp": "^3.8.7",
+		"vinyl": "^2.1.0",
+		"xo": "*"
+	},
+	"xo": {
+		"envs": [
+			"jasmine"
+		]
+	},
+	"ava": {
+		"serial": true
+	}
 }

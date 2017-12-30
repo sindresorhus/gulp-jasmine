@@ -1,6 +1,6 @@
 # gulp-jasmine [![Build Status](https://travis-ci.org/sindresorhus/gulp-jasmine.svg?branch=master)](https://travis-ci.org/sindresorhus/gulp-jasmine)
 
-> Run [Jasmine 2](http://jasmine.github.io/2.4/introduction.html) tests in Node.js
+> Run [Jasmine 2](https://jasmine.github.io/index.html) tests in Node.js
 
 *Issues with the output should be reported on the Jasmine [issue tracker](https://github.com/jasmine/jasmine/issues).*
 
@@ -48,7 +48,7 @@ Include stack traces in failures in default reporter.
 
 ##### reporter
 
-Type: `object`, `array` of `objects`
+Type: `Object` `Object[]`
 
 Reporters to use.
 
@@ -83,9 +83,9 @@ Stops the stream on failed tests.
 
 ##### config
 
-Type: `object`
+Type: `Object`
 
-Passes the config to Jasmine's [loadConfig](http://jasmine.github.io/2.4/node.html#section-Load_configuration_from_a_file_or_from_an_object.) method.
+Passes the config to Jasmine's [loadConfig](https://jasmine.github.io/2.8/node.html#section-Load_configuration_from_a_file_or_from_an_object.) method.
 
 #### events
 
@@ -102,4 +102,4 @@ Add `require('babel-core/register');` to the top of your `gulpfile.js`. Make sur
 
 ## License
 
-MIT © [Sindre Sorhus](http://sindresorhus.com)
+MIT © [Sindre Sorhus](https://sindresorhus.com)
