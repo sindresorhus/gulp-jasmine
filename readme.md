@@ -1,6 +1,6 @@
 # gulp-jasmine [![Build Status](https://travis-ci.org/sindresorhus/gulp-jasmine.svg?branch=master)](https://travis-ci.org/sindresorhus/gulp-jasmine)
 
-> Run [Jasmine 2](https://jasmine.github.io/index.html) tests in Node.js
+> Run [Jasmine 3](https://jasmine.github.io/index.html) tests in Node.js
 
 *Issues with the output should be reported on the Jasmine [issue tracker](https://github.com/jasmine/jasmine/issues).*
 
