@@ -1,13 +1,13 @@
 import test from 'ava';
 import Vinyl from 'vinyl';
 import through2 from 'through2';
-import m from '.';
+import gulpJasmine from '.';
 
 const out = process.stdout.write.bind(process.stdout);
 
 function jasmine(file, options) {
 	return new Promise((resolve, reject) => {
-		const stream = m(options);
+		const stream = gulpJasmine(options);
 
 		let output = '';
 
@@ -59,7 +59,7 @@ test('run unit test and fail', async t => {
 			timeout: 9000,
 			verbose: true
 		});
-	} catch (err) {
+	} catch (_) {
 		errorThrown++;
 	}
 
@@ -67,25 +67,26 @@ test('run unit test and fail', async t => {
 });
 
 test.cb('run the test only once even if called in succession', t => {
-	const stream = m({
+	const stream = gulpJasmine({
 		timeout: 9000,
 		verbose: true
 	});
 
 	let output = '';
 
-	const reader = through2.obj((file, enc, cb) => {
-		cb();
-	}, cb => {
+	const reader = through2.obj((file, encoding, callback) => {
+		callback();
+	}, callback => {
 		process.stdout.write = out;
 		t.is(output.match(/should pass: passed/g).length, 1);
-		cb();
+		callback();
 		t.end();
 	});
 
-	process.stdout.write = str => {
-		output += str;
+	process.stdout.write = string => {
+		output += string;
 	};
+
 	stream.pipe(reader);
 
 	stream.write(new Vinyl({

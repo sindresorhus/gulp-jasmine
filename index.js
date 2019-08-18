@@ -22,9 +22,7 @@ function deleteRequireCache(id) {
 	}
 }
 
-module.exports = options => {
-	options = options || {};
-
+module.exports = (options = {}) => {
 	const jasmine = new Jasmine();
 
 	if (options.timeout) {
@@ -36,8 +34,8 @@ module.exports = options => {
 	}
 
 	const errorOnFail = options.errorOnFail === undefined ? true : options.errorOnFail;
-	const color = process.argv.indexOf('--no-color') === -1;
-	const reporter = options.reporter;
+	const color = !process.argv.includes('--no-color');
+	const {reporter} = options;
 
 	// Default reporter behavior changed in 2.5.2
 	if (jasmine.env.clearReporters) {
@@ -45,8 +43,8 @@ module.exports = options => {
 	}
 
 	if (reporter) {
-		for (const el of arrify(reporter)) {
-			jasmine.addReporter(el);
+		for (const element of arrify(reporter)) {
+			jasmine.addReporter(element);
 		}
 	} else {
 		jasmine.addReporter(new Reporter({
@@ -56,14 +54,14 @@ module.exports = options => {
 		}));
 	}
 
-	return through.obj((file, enc, cb) => {
+	return through.obj((file, encoding, callback) => {
 		if (file.isNull()) {
-			cb(null, file);
+			callback(null, file);
 			return;
 		}
 
 		if (file.isStream()) {
-			cb(new PluginError('gulp-jasmine', 'Streaming not supported'));
+			callback(new PluginError('gulp-jasmine', 'Streaming not supported'));
 			return;
 		}
 
@@ -75,8 +73,8 @@ module.exports = options => {
 
 		jasmine.addSpecFile(resolvedPath);
 
-		cb(null, file);
-	}, function (cb) {
+		callback(null, file);
+	}, function (callback) {
 		const self = this;
 
 		try {
@@ -90,18 +88,18 @@ module.exports = options => {
 
 			jasmine.onComplete(passed => {
 				if (errorOnFail && !passed) {
-					cb(new PluginError('gulp-jasmine', 'Tests failed', {
+					callback(new PluginError('gulp-jasmine', 'Tests failed', {
 						showStack: false
 					}));
 				} else {
 					self.emit('jasmineDone', passed);
-					cb();
+					callback();
 				}
 			});
 
 			jasmine.execute();
-		} catch (err) {
-			cb(new PluginError('gulp-jasmine', err, {showStack: true}));
+		} catch (error) {
+			callback(new PluginError('gulp-jasmine', error, {showStack: true}));
 		}
 	});
 };

@@ -18,7 +18,7 @@ $ npm install --save-dev gulp-jasmine
 const gulp = require('gulp');
 const jasmine = require('gulp-jasmine');
 
-gulp.task('default', () =>
+exports.default = () => (
 	gulp.src('spec/test.js')
 		// gulp-jasmine works on filepaths so you can't have any plugins before it
 		.pipe(jasmine())
@@ -28,9 +28,11 @@ gulp.task('default', () =>
 
 ## API
 
-### jasmine([options])
+### jasmine(options?)
 
 #### options
+
+Type: `object`
 
 ##### verbose
 
@@ -48,7 +50,7 @@ Include stack traces in failures in default reporter.
 
 ##### reporter
 
-Type: `Object` `Object[]`
+Type: `object | object[]`
 
 Reporters to use.
 
@@ -57,7 +59,7 @@ const gulp = require('gulp');
 const jasmine = require('gulp-jasmine');
 const reporters = require('jasmine-reporters');
 
-gulp.task('default', () =>
+exports.default = () => (
 	gulp.src('spec/test.js')
 		.pipe(jasmine({
 			reporter: new reporters.JUnitXmlReporter()
@@ -83,7 +85,7 @@ Stops the stream on failed tests.
 
 ##### config
 
-Type: `Object`
+Type: `object`
 
 Passes the config to Jasmine's [loadConfig](https://jasmine.github.io/2.8/node.html#section-Load_configuration_from_a_file_or_from_an_object.) method.
 
@@ -93,13 +95,9 @@ Passes the config to Jasmine's [loadConfig](https://jasmine.github.io/2.8/node.h
 
 Emitted after all tests have been completed. For a discussion about why `jasmineDone` and not `end` nor `finish`, see [pull request #71](https://github.com/sindresorhus/gulp-jasmine/pull/71).
 
+
 ## FAQ
 
 ### Babel
 
 Add `require('babel-core/register');` to the top of your `gulpfile.js`. Make sure to read the [Babel docs](https://babeljs.io/docs/usage/require/).
-
-
-## License
-
-MIT © [Sindre Sorhus](https://sindresorhus.com)
