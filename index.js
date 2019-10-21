@@ -29,6 +29,10 @@ module.exports = (options = {}) => {
 		jasmine.jasmine.DEFAULT_TIMEOUT_INTERVAL = options.timeout;
 	}
 
+	if (options.seed) {
+		jasmine.seed(options.seed);
+	}
+
 	if (options.config) {
 		jasmine.loadConfig(options.config);
 	}
