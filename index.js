@@ -74,7 +74,7 @@ module.exports = (options = {}) => {
 		jasmine.addSpecFile(resolvedPath);
 
 		callback(null, file);
-	}, function (callback) {
+	}, async function (callback) {
 		const self = this;
 
 		try {
@@ -86,18 +86,19 @@ module.exports = (options = {}) => {
 				}
 			}
 
-			jasmine.onComplete(passed => {
-				if (errorOnFail && !passed) {
-					callback(new PluginError('gulp-jasmine', 'Tests failed', {
-						showStack: false
-					}));
-				} else {
-					self.emit('jasmineDone', passed);
-					callback();
-				}
-			});
+			jasmine.exitOnCompletion = false;
 
-			jasmine.execute();
+			const {overallStatus} = await jasmine.execute();
+			const passed = overallStatus === 'passed';
+
+			if (errorOnFail && !passed) {
+				callback(new PluginError('gulp-jasmine', 'Tests failed', {
+					showStack: false
+				}));
+			} else {
+				self.emit('jasmineDone', passed);
+				callback();
+			}
 		} catch (error) {
 			callback(new PluginError('gulp-jasmine', error, {showStack: true}));
 		}
