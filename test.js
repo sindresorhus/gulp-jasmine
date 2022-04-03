@@ -11,8 +11,8 @@ function jasmine(file, options) {
 
 		let output = '';
 
-		process.stdout.write = str => {
-			out(str);
+		process.stdout.write = (str, ...args) => {
+			out(str, ...args);
 			output += str;
 		};
 
@@ -83,7 +83,8 @@ test.cb('run the test only once even if called in succession', t => {
 		t.end();
 	});
 
-	process.stdout.write = string => {
+	process.stdout.write = (string, ...args) => {
+		out(string, ...args);
 		output += string;
 	};
 
