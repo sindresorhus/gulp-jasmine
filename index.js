@@ -30,7 +30,15 @@ module.exports = (options = {}) => {
 	}
 
 	if (options.config) {
-		jasmine.loadConfig(options.config);
+		jasmine.loadConfig({
+			// By default, use require loader.
+			// Without this config, the default loader will use `import` instead of `require`
+			// With import loading, it is impossible to make cache invalidation
+			// See: https://github.com/nodejs/modules/issues/307
+			jsLoader: 'require',
+
+			...options.config
+		});
 	}
 
 	const errorOnFail = options.errorOnFail === undefined ? true : options.errorOnFail;
